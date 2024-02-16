@@ -27,6 +27,17 @@ export default function Login() {
     onSuccess: (response) => {
       const result = response?.data?.data;
 
+      if (result.user.role.name == "user") {
+        toast({
+          title: "User tidak valid!",
+          status: "error",
+          isClosable: true,
+          position: "top-right",
+        });
+
+        return;
+      }
+
       Cookies.set("token", JSON.stringify(result));
 
       return push("/dashboard");
