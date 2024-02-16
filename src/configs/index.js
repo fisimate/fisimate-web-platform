@@ -1,3 +1,3 @@
-export const apiUrl = process.env.API_URL;
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const apiVersion = process.env.API_VERSION;
+export const apiVersion = process.env.NEXT_PUBLIC_API_VERSION;
