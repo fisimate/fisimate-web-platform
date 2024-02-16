@@ -1,5 +1,5 @@
 "use client";
-import { useLogin } from "@/hooks/useAth";
+import { useLogin } from "@/hooks/useAuth";
 import { useFormik } from "formik";
 import { Button, useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
