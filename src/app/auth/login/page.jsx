@@ -4,10 +4,19 @@ import { useFormik } from "formik";
 import { Button, useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/app-store";
+import {} from "zustand/react/shallow";
 
 export default function Login() {
   const { push } = useRouter();
   const toast = useToast();
+
+  const { setUser, setIsLogin } = useAuthStore(
+    useShallow((state) => ({
+      setUser: state.setUser,
+      setIsLogin: state.setIsLogin,
+    }))
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -39,6 +48,10 @@ export default function Login() {
       }
 
       Cookies.set("token", JSON.stringify(result));
+
+      setUser(result);
+
+      setIsLogin(true);
 
       return push("/dashboard");
     },
