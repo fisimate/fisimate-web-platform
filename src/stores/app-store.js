@@ -19,4 +19,9 @@ export const useAuthStore = create((set) => ({
       user: null,
     }));
   },
+  setIslogin: () => {
+    set((data) => ({
+      isLoggedIn: data,
+    }));
+  },
 }));
