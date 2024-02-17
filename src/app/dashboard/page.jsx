@@ -1,3 +1,8 @@
+"use client";
+import { useAuthStore } from "@/stores/app-store";
+
 export default function Dashboard() {
-  return <h1>Hello World</h1>;
+  const { user } = useAuthStore();
+
+  return <h1>{JSON.stringify(user)}</h1>;
 }

@@ -5,18 +5,12 @@ import { Button, useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/app-store";
-import {} from "zustand/react/shallow";
 
 export default function Login() {
   const { push } = useRouter();
   const toast = useToast();
 
-  const { setUser, setIsLogin } = useAuthStore(
-    useShallow((state) => ({
-      setUser: state.setUser,
-      setIsLogin: state.setIsLogin,
-    }))
-  );
+  const { setUser, setIsLogin, user } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
@@ -36,7 +30,7 @@ export default function Login() {
     onSuccess: (response) => {
       const result = response?.data?.data;
 
-      if (result.user.role.name == "user") {
+      if (result.user.role.name === "user") {
         toast({
           title: "User tidak valid!",
           status: "error",
@@ -45,15 +39,15 @@ export default function Login() {
         });
 
         return;
+      } else {
+        Cookies.set("token", JSON.stringify(result));
+
+        push("/dashboard");
+
+        setUser(result);
+
+        setIsLogin(true);
       }
-
-      Cookies.set("token", JSON.stringify(result));
-
-      setUser(result);
-
-      setIsLogin(true);
-
-      return push("/dashboard");
     },
     onError: (error) => {
       const result = error.response.data;
