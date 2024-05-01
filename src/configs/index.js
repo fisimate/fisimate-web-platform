@@ -1,3 +1,12 @@
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const stage = process.env.NEXT_PUBLIC_TYPE;
 
-export const apiVersion = process.env.NEXT_PUBLIC_API_VERSION;
+export default {
+  apiUrl:
+    stage == "dev"
+      ? process.env.NEXT_PUBLIC_API_DEV_URL
+      : process.env.NEXT_PUBLIC_API_URL,
+  apiVersion:
+    stage == "dev"
+      ? process.env.NEXT_PUBLIC_API_DEV_VERSION
+      : process.env.NEXT_PUBLIC_API_VERSION,
+};
