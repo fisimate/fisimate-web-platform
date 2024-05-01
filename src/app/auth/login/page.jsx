@@ -10,7 +10,7 @@ export default function Login() {
   const { push } = useRouter();
   const toast = useToast();
 
-  const { setUser, setIsLogin, user } = useAuthStore();
+  const { setUser, setIsLogin } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
