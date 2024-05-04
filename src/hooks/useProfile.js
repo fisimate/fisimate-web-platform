@@ -1,5 +1,5 @@
 import axiosInstance from "@/libs/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useProfileQuery = (token) => {
   return useQuery({
@@ -11,5 +11,33 @@ export const useProfileQuery = (token) => {
         },
       });
     },
+  });
+};
+
+export const useUpdateProfile = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async (data) => {
+      return await axiosInstance.put("/users/update", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
+  });
+};
+
+export const useUpdatePassword = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async (data) => {
+      return await axiosInstance.post("/users/password/update", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
   });
 };
