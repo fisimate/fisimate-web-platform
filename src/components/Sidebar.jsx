@@ -35,7 +35,7 @@ export default function Sidebar({ children }) {
         {/* Mobile Nav */}
         <MobileNav onOpen={onOpen} />
 
-        <Box ml={{ base: 0, md: 60 }} p={"4"}>
+        <Box ml={{ base: 0, md: 60 }} p={8}>
           {children}
         </Box>
       </Box>
