@@ -23,7 +23,7 @@ export default function NextBreadCrumb({ capitalizeLinks }) {
             : link;
 
           return (
-            <BreadcrumbItem>
+            <BreadcrumbItem key={index}>
               <BreadcrumbLink as={Link} href={href}>
                 {itemLink}
               </BreadcrumbLink>
