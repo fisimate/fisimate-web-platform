@@ -15,7 +15,7 @@ export default function ChatBubble({ type }) {
             molestias illum incidunt dolore voluptatibus? Incidunt commodi natus
             provident!
           </p>
-          <div className="flex flex-row gap-3 mt-3">
+          <div className="flex flex-row gap-3 mt-6">
             <button className="border-blue-500 border-2 p-1 px-2 rounded-md text-blue-500">
               <span className="flex flex-row items-center gap-2">
                 <FiRepeat />
