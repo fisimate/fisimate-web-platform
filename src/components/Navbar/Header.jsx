@@ -14,6 +14,7 @@ import {
 import React from "react";
 import { FiChevronDown } from "react-icons/fi";
 import Sidebar from "./Sidebar";
+import Link from "next/link";
 
 export default function Header({ children, hasSidebar = false }) {
   return (
@@ -86,7 +87,9 @@ export default function Header({ children, hasSidebar = false }) {
                   </HStack>
                 </MenuButton>
                 <MenuList className="bg-white shadow">
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem>
+                    <Link href={'/profiles'}>Profile</Link>
+                  </MenuItem>
                   <MenuItem>Settings</MenuItem>
                   <MenuItem>Billing</MenuItem>
                   <MenuDivider />
