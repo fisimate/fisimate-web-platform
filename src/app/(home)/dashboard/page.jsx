@@ -2,16 +2,22 @@
 import CardStat from "@/components/CardStat";
 import BarChart from "@/components/Chart/BarChart";
 import { Flex, Select } from "@chakra-ui/react";
-import { FiBook, FiDatabase, FiMonitor, FiUsers } from "react-icons/fi";
+import { FiBook, FiUsers } from "react-icons/fi";
+import { RiFormula } from "react-icons/ri";
+import { PiBooksLight, PiExamLight } from "react-icons/pi";
 
 export default function Dashboard() {
   return (
     <div className="">
       <Flex direction={"row"} justify={"space-between"} gap={8} mt={6}>
         <CardStat label={"Total Students"} value={12} icon={<FiUsers />} />
-        <CardStat label={"Banks"} value={24} icon={<FiDatabase />} />
-        <CardStat label={"Materials"} value={42} icon={<FiBook />} />
-        <CardStat label={"Simulations"} value={90} icon={<FiMonitor />} />
+        <CardStat label={"Total Exams"} value={24} icon={<PiExamLight />} />
+        <CardStat
+          label={"Total Materials"}
+          value={42}
+          icon={<PiBooksLight />}
+        />
+        <CardStat label={"Total Formulas"} value={90} icon={<RiFormula />} />
       </Flex>
       <div className="mt-6 flex justify-between gap-8">
         <div className="bg-white p-8 w-3/5 rounded-xl">
