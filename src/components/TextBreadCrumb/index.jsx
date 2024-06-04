@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NextBreadCrumb({ capitalizeLinks }) {
+export default function TextBreadCrumb({ capitalizeLinks }) {
   const paths = usePathname();
 
   const pathNames = paths.split("/").filter((path) => path);

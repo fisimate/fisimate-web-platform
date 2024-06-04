@@ -1,10 +1,10 @@
 "use client";
-import CardStat from "@/components/CardStat";
 import BarChart from "@/components/Chart/BarChart";
 import { Flex, Select } from "@chakra-ui/react";
-import { FiBook, FiUsers } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
 import { RiFormula } from "react-icons/ri";
 import { PiBooksLight, PiExamLight } from "react-icons/pi";
+import CardStat from "@/components/CardStat";
 
 export default function Dashboard() {
   return (

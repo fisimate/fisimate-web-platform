@@ -1,5 +1,5 @@
 import Header from "@/components/Navbar/Header";
-import NextBreadCrumb from "@/components/NextBreadCrumb";
+import TextBreadCrumb from "@/components/TextBreadCrumb";
 
 export const metadata = {
   title: "Dashboard | Fisimate",
@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <Header>
-      <NextBreadCrumb capitalizeLinks />
+      <TextBreadCrumb capitalizeLinks />
       {children}
     </Header>
   );

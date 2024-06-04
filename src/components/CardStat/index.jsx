@@ -2,12 +2,11 @@ import {
   Card,
   CardBody,
   HStack,
-  IconButton,
   Stat,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
-import Icon from "./Icon";
+import Icon from "../Icon";
 
 export default function CardStat({ label, value, icon }) {
   return (
