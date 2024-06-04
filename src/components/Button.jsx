@@ -5,6 +5,7 @@ export default function Button({
   variant = "solid",
   size = "md",
   color = "blue",
+  ...rest
 }) {
   const btnSize = {
     xs: "px-3 py-2 text-xs",
@@ -28,6 +29,7 @@ export default function Button({
     <React.Fragment>
       <button
         className={`${btnSize[size]} ${btnVariant[variant]} ${btnColor[color]} font-medium text-center rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300`}
+        {...rest}
       >
         {text}
       </button>
