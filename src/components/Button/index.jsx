@@ -32,7 +32,7 @@ export default function Button({
   return (
     <React.Fragment>
       <button
-        className={`${btnSize[size]} ${btnVariant[variant]} ${btnColor[color]} font-medium text-center rounded-lg focus:ring-4 focus:outline-none flex flex-row items-center gap-2`}
+        className={`${btnSize[size]} ${btnVariant[variant]} ${btnColor[color]} font-medium text-center rounded-lg focus:ring-4 focus:outline-none flex flex-row items-center gap-2 justify-center `}
         {...rest}
       >
         {isLoading && <Spinner size={"sm"} />}
