@@ -13,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#EDF2F7]">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
+      <body className="dark:bg-boxdark-2 dark:text-bodydark">
         <InitProvider>
           <ChakraProvider>{children}</ChakraProvider>
         </InitProvider>
