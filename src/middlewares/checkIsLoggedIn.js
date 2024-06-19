@@ -1,8 +1,12 @@
 import axiosInstance from "@/libs/axios";
 
 export default function checkIsLoggedIn(token) {
+  if (!token || token == undefined) {
+    return false;
+  }
+
   try {
-    const accessToken = JSON.parse(token.value).access_token;
+    const accessToken = JSON.parse(token).access_token;
 
     return axiosInstance
       .get("/users/profile", {
