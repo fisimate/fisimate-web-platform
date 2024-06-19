@@ -6,7 +6,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 export default function UpdatePassword() {
-  const token = JSON.parse(Cookies.get("token")).access_token;
+  const tokenCookie = Cookies.get("token");
+  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
 
   const { push } = useRouter();
 

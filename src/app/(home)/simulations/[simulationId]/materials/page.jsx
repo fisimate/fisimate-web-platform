@@ -11,7 +11,8 @@ export default function Material({ params }) {
   const toast = useToast();
   const route = useRouter();
 
-  const token = JSON.parse(Cookies.get("token")).access_token;
+  const tokenCookie = Cookies.get("token");
+  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
 
   const { data, isLoading, isError } = useGetMaterials({
     simulationId,

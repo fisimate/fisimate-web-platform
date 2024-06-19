@@ -1,12 +1,14 @@
 "use client";
 import Button from "@/components/Button";
+import PasswordInput from "@/components/Form/PasswordInput";
 import TextInput from "@/components/Form/TextInput";
 import { useProfileQuery } from "@/hooks/useProfile";
 import { Input, Spinner, useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 
 export default function Profile() {
-  const token = JSON.parse(Cookies.get("token")).access_token;
+  const tokenCookie = Cookies.get("token");
+  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
 
   const toast = useToast();
 
@@ -49,12 +51,9 @@ export default function Profile() {
               </p>
             </div>
             <div className="flex flex-row justify-end gap-4 mt-4">
-              <button className="text-white px-4 py-2 bg-red-500 rounded-lg">
-                Delete
-              </button>
-              <button className="text-white px-4 py-2 bg-blue-500 rounded-lg">
-                Simpan
-              </button>
+              <Button text={"Delete"} type="submit" color="red" />
+              <Button text={"Simpan"} type="submit" isLoading />
+              <Button text={"Simpan"} type="submit" variant="alternative" />
             </div>
           </div>
         </div>
@@ -73,6 +72,7 @@ export default function Profile() {
                 method="POST"
               >
                 <TextInput type="email" placeholder="Email" />
+                <PasswordInput placeholder="Password" />
                 <Input type="text" placeholder="Fullname" name="fullname" />
                 <Input type="email" placeholder="Email" name="email" />
                 <Input type="text" placeholder="Identity Number" name="nis" />

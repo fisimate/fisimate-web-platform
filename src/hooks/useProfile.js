@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useProfileQuery = (token) => {
+export const useGetProfile = (token) => {
   return useQuery({
     queryKey: ["user-info"],
     queryFn: async () => {

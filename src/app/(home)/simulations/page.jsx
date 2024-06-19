@@ -4,7 +4,8 @@ import { Spinner } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 
 export default function ExamBank() {
-  const token = JSON.parse(Cookies.get("token")).access_token;
+  const tokenCookie = Cookies.get("token");
+  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
 
   const { data, isLoading } = useGetSimulations(token);
 
