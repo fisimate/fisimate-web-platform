@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useGetToken, useRemoveToken } from "@/hooks/useToken";
 import { useGetProfile } from "@/hooks/useProfile";
+import { PiKey } from "react-icons/pi";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -127,6 +128,17 @@ const DropdownUser = () => {
                 />
               </svg>
               My Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/profiles/password"
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+            >
+              <span className="text-xl">
+                <PiKey />
+              </span>
+              Update Password
             </Link>
           </li>
         </ul>
