@@ -1,13 +1,17 @@
 "use client";
+import Breadcrumb from "@/components/Breadcrumb";
+import Button from "@/components/Button";
+import InputGroup from "@/components/InputGroup";
 import { useUpdatePassword } from "@/hooks/useProfile";
-import { Button, useToast } from "@chakra-ui/react";
+import { useGetToken } from "@/hooks/useToken";
+import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import Cookies from "js-cookie";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 export default function UpdatePassword() {
-  const tokenCookie = Cookies.get("token");
-  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
+  const token = useGetToken();
 
   const { push } = useRouter();
 
@@ -53,32 +57,56 @@ export default function UpdatePassword() {
   });
 
   return (
-    <div className="">
-      <form onSubmit={formik.handleSubmit}>
-        <p>{token}</p>
-        <input
-          type="password"
-          placeholder="Old Password"
-          name="oldPassword"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          name="newPassword"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="Password Confirmation"
-          name="passwordConfirmation"
-          onChange={handleChange}
-        />
+    <React.Fragment>
+      <Breadcrumb pageName={"Update Password"} />
 
-        <Button type="submit" isLoading={isPending} isDisabled={isPending}>
-          Update
-        </Button>
-      </form>
-    </div>
+      <div className="flex flex-col gap-9">
+        <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              Update Password
+            </h3>
+          </div>
+          <form onSubmit={formik.handleSubmit}>
+            <div className="p-6.5">
+              <InputGroup
+                label={"Old Password"}
+                type="password"
+                name="oldPassword"
+                onChange={handleChange}
+                placeholder="Masukkan pasword lama"
+              />
+
+              <InputGroup
+                label={"New Password"}
+                type="password"
+                name="newPassword"
+                onChange={handleChange}
+                placeholder="Masukkan password baru"
+              />
+
+              <InputGroup
+                label={"Confirmation Password"}
+                type="password"
+                name="passwordConfirmation"
+                onChange={handleChange}
+                placeholder="Konfirmasi password baru"
+              />
+
+              <div className="flex gap-4 justify-end">
+                <Link href={"/profiles"}>
+                  <Button
+                    text={"Cancel"}
+                    variant="outline"
+                    disabled={isPending}
+                  />
+                </Link>
+                <Button text={"Update"} type="submit" disabled={isPending} />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
