@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useGetToken, useRemoveToken } from "@/hooks/useToken";
 import { useGetProfile } from "@/hooks/useProfile";
@@ -66,7 +65,7 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <Image
+          <img
             width={112}
             height={112}
             src={
