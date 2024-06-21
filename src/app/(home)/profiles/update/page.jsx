@@ -1,5 +1,5 @@
 "use client";
-import { useProfileQuery, useUpdateProfile } from "@/hooks/useProfile";
+import { useGetProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { Button, useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Cookies from "js-cookie";
@@ -11,7 +11,7 @@ export default function UpdatePassword() {
   const { push } = useRouter();
   const toast = useToast();
 
-  const { data } = useProfileQuery(token);
+  const { data } = useGetProfile(token);
   const { mutate, isPending } = useUpdateProfile({
     onSuccess: () => {
       toast({
@@ -43,7 +43,7 @@ export default function UpdatePassword() {
     onSubmit: (values) => {
       mutate(values);
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   const handleChange = (e) => {
