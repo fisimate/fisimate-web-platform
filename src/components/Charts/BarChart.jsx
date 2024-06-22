@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import ReactApexChart from "react-apexcharts";
 import dynamic from "next/dynamic";
 
-export default function ChartTwo({ articlesPerMonth }) {
+export default function BarChart({ data }) {
   const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
   });
@@ -10,7 +10,7 @@ export default function ChartTwo({ articlesPerMonth }) {
   const [chartData, setChartData] = useState({
     series: [
       {
-        name: "Articles",
+        name: "Siswa mengerjakan kuis",
         data: Array(12).fill(0), // Initialize data for 12 months
       },
     ],
@@ -35,7 +35,7 @@ export default function ChartTwo({ articlesPerMonth }) {
     const monthlyData = Array(12).fill(0);
 
     // Populate monthlyData with article counts
-    articlesPerMonth?.forEach((item) => {
+    data?.forEach((item) => {
       monthlyData[item.month - 1] = item.count; // month - 1 to convert to 0-based index
     });
 
@@ -43,15 +43,15 @@ export default function ChartTwo({ articlesPerMonth }) {
       ...prevState,
       series: [
         {
-          name: "Articles",
+          name: "Siswa mengerjakan kuis",
           data: monthlyData,
         },
       ],
     }));
-  }, [articlesPerMonth]);
+  }, [data]);
 
   const options = {
-    colors: ["#7AB2B2"],
+    colors: ["#072DF4"],
     chart: {
       fontFamily: "Satoshi, sans-serif",
       type: "bar",
@@ -113,7 +113,7 @@ export default function ChartTwo({ articlesPerMonth }) {
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Published Articles Per Month This Year
+            Jumlah Siswa Mengerjakan Kuis Tahun Ini
           </h4>
         </div>
       </div>
