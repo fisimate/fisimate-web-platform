@@ -1,5 +1,6 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
+import Button from "@/components/Button";
 import Spinner from "@/components/Spinner";
 import {
   useGetProfile,
@@ -228,19 +229,19 @@ export default function Profile() {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    <Button
                       onClick={refetch}
                       type="button"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
+                      size="md"
+                      text={"Cancel"}
+                      variant="outline"
+                    />
+                    <Button
+                      onClick={refetch}
                       type="submit"
-                    >
-                      Save
-                    </button>
+                      size="md"
+                      text={"Save"}
+                    />
                   </div>
                 </form>
               )}
@@ -347,18 +348,19 @@ export default function Profile() {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    <Button
+                      onClick={refetch}
+                      type="button"
+                      size="md"
+                      text={"Cancel"}
+                      variant="outline"
+                    />
+                    <Button
+                      onClick={refetch}
                       type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Save
-                    </button>
+                      size="md"
+                      text={"Save"}
+                    />
                   </div>
                 </form>
               )}
