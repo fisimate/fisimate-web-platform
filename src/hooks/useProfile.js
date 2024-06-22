@@ -41,3 +41,17 @@ export const useUpdatePassword = ({ onSuccess, onError, token }) => {
     onError,
   });
 };
+
+export const useUpdateProfilePicture = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async (data) => {
+      return await axiosInstance.post("/users/profile/picture", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
+  });
+};
