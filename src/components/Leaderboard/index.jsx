@@ -1,42 +1,45 @@
 import Link from "next/link";
-import limitString from "@/utils/limitString";
-import convertDate from "@/utils/convertDate";
 
-export default function LatestArticleCard({ articles }) {
+export default function Leaderboard({ data }) {
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <h4 className="mb-6 px-7.5 text-xl font-semibold text-black dark:text-white">
-        Latest Articles
+        Leaderboard
       </h4>
 
       <div>
-        {articles?.map((article, key) => (
+        {data?.map((item, key) => (
           <Link
-            href={`/articles/${article.id}`}
+            href={`/articles/${item.id}`}
             className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
             key={key}
           >
-            <div className="relative h-14 w-14 rounded-full items-center flex">
+            <span className="h-12 w-12 rounded-full overflow-hidden">
               <img
-                width={56}
-                height={56}
-                src={article.thumbnail}
-                alt="Article"
+                width={48}
+                height={48}
+                src={
+                  item?.user?.profilePicture ??
+                  "/images/user/user-avatar.png"
+                }
                 style={{
-                  width: "auto",
-                  height: "auto",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
                 }}
-                className="rounded-lg"
+                alt="User"
               />
-            </div>
+            </span>
             <div className="flex flex-1 items-center justify-between">
               <div>
                 <h5 className="font-medium text-black dark:text-white">
-                  {limitString(article.title, 35)}
+                  {/* {limitString(article.title, 35)} */}
+                  {item.user.fullname}
                 </h5>
                 <p>
                   <span className="text-sm text-black dark:text-white">
-                    {convertDate(article.publishedAt)}
+                    {/* {convertDate(article.publishedAt)} */}
+                    {item.user.nis}
                   </span>
                 </p>
               </div>
