@@ -1,23 +1,28 @@
 import React from "react";
 
-export default function Button({ variant = "solid", text, ...rest }) {
-  if (variant == "solid") {
-    return (
-      <button
-        className="inline-flex items-center justify-center rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-        {...rest}
-      >
-        {text}
-      </button>
-    );
-  } else if (variant == "outline") {
-    return (
-      <button
-        className="inline-flex items-center justify-center rounded-md border border-primary px-10 py-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
-        {...rest}
-      >
-        {text}
-      </button>
-    );
-  }
+export default function Button({
+  variant = "solid",
+  text,
+  size = "lg",
+  ...rest
+}) {
+  const baseClasses =
+    "inline-flex items-center justify-center rounded-md text-center font-medium";
+  const sizeClasses = {
+    lg: "px-10 py-4 lg:px-8 xl:px-10",
+    md: "px-6 py-2",
+  };
+  const variantClasses = {
+    solid: `bg-primary text-white hover:bg-opacity-90`,
+    outline: `border border-primary text-primary hover:bg-opacity-90`,
+  };
+
+  return (
+    <button
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`}
+      {...rest}
+    >
+      {text}
+    </button>
+  );
 }
