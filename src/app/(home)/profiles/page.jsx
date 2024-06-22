@@ -1,7 +1,11 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Spinner from "@/components/Spinner";
-import { useGetProfile, useUpdateProfile } from "@/hooks/useProfile";
+import {
+  useGetProfile,
+  useUpdateProfile,
+  useUpdateProfilePicture,
+} from "@/hooks/useProfile";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -15,7 +19,8 @@ export default function Profile() {
 
   const toast = useToast();
 
-  const { data, isLoading, isError } = useGetProfile(token);
+  const { data, isLoading, isError, refetch, isRefetching } =
+    useGetProfile(token);
 
   if (isError) {
     toast({
@@ -33,25 +38,79 @@ export default function Profile() {
       fullname: "",
       email: "",
       nis: "333",
-      profilePicture: "",
     },
     onSubmit: (values) => {
       mutate(values);
     },
   });
 
+  const pictureForm = useFormik({
+    initialValues: {
+      profilePicture: "",
+    },
+    onSubmit: () => {
+      const formData = new FormData();
+
+      formData.append("profilePicture", pictureForm.values.profilePicture);
+
+      mutatePicture(formData);
+    },
+  });
+
   useEffect(() => {
     if (data) {
       profileForm.setValues({
-        fullname: data.data.data.fullname,
-        email: data.data.data.email,
+        fullname: data?.data?.data?.fullname,
+        email: data?.data?.data?.email,
+      });
+
+      pictureForm.setValues({
+        profilePicture: data?.data?.data?.profilePicture,
       });
     }
   }, [data]);
 
   const { mutate, isPending } = useUpdateProfile({
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => {
+      toast({
+        title: "Berhasil update profile!",
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        title: result.message,
+        status: "error",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    token,
+  });
+
+  const { mutate: mutatePicture } = useUpdateProfilePicture({
+    onSuccess: () => {
+      toast({
+        title: "Berhasil update profile!",
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        title: result.message,
+        status: "error",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
     token,
   });
 
@@ -72,7 +131,7 @@ export default function Profile() {
               </h3>
             </div>
             <div className="p-7">
-              {isLoading ? (
+              {isLoading || isRefetching ? (
                 <div className="flex justify-center">
                   <Spinner />
                 </div>
@@ -81,7 +140,7 @@ export default function Profile() {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
+                      htmlFor="fullname"
                     >
                       Full Name
                     </label>
@@ -114,8 +173,8 @@ export default function Profile() {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="fullName"
-                        id="fullName"
+                        name="fullname"
+                        id="fullname"
                         onChange={handleChange}
                         placeholder="Masukkan nama lengkap"
                         value={profileForm.values.fullname}
@@ -126,7 +185,7 @@ export default function Profile() {
                   <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
+                      htmlFor="email"
                     >
                       Email Address
                     </label>
@@ -159,8 +218,8 @@ export default function Profile() {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="email"
-                        name="emailAddress"
-                        id="emailAddress"
+                        name="email"
+                        id="email"
                         onChange={handleChange}
                         placeholder="Masukkan alamat email"
                         value={profileForm.values.email}
@@ -171,7 +230,8 @@ export default function Profile() {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
+                      onClick={refetch}
+                      type="button"
                     >
                       Cancel
                     </button>
@@ -200,14 +260,22 @@ export default function Profile() {
                   <Spinner />
                 </div>
               ) : (
-                <form action="#">
+                <form onSubmit={pictureForm.handleSubmit}>
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
+                    <div className="h-14 w-14 rounded-full overflow-hidden">
                       <img
-                        src={profileForm.values.profilePicture}
+                        src={
+                          pictureForm.values.profilePicture ??
+                          "/images/user/user-avatar.png"
+                        }
                         width={55}
                         height={55}
                         alt="User"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
                       />
                     </div>
                     <div>
@@ -233,6 +301,12 @@ export default function Profile() {
                       type="file"
                       accept="image/*"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                      onChange={(e) => {
+                        pictureForm.setFieldValue(
+                          "profilePicture",
+                          e.target.files[0]
+                        );
+                      }}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
