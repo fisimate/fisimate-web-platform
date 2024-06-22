@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import InitProvider from "@/utils/QueryProvider";
+import "flatpickr/dist/flatpickr.min.css";
 import InitChakraProvider from "@/utils/ChakraClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
