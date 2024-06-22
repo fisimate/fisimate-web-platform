@@ -64,16 +64,17 @@ const DropdownUser = () => {
           <span className="block text-xs text-body">Admin</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        <span className="h-12 w-12 rounded-full overflow-hidden">
           <img
-            width={112}
-            height={112}
+            width={48}
+            height={48}
             src={
               data?.data?.data.profilePicture ?? "/images/user/user-avatar.png"
             }
             style={{
-              width: "auto",
-              height: "auto",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
             }}
             alt="User"
           />
