@@ -5,6 +5,7 @@ const theme = extendTheme({
     global: () => ({
       body: {
         bg: "",
+        fontFamily: '"Poppins", sans-serif"',
       },
     }),
   },
