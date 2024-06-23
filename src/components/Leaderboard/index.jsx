@@ -19,8 +19,7 @@ export default function Leaderboard({ data }) {
                 width={48}
                 height={48}
                 src={
-                  item?.user?.profilePicture ??
-                  "/images/user/user-avatar.png"
+                  item?.user?.profilePicture ?? "/images/user/user-avatar.png"
                 }
                 style={{
                   width: "100%",
@@ -33,15 +32,18 @@ export default function Leaderboard({ data }) {
             <div className="flex flex-1 items-center justify-between">
               <div>
                 <h5 className="font-medium text-black dark:text-white">
-                  {/* {limitString(article.title, 35)} */}
                   {item.user.fullname}
                 </h5>
                 <p>
                   <span className="text-sm text-black dark:text-white">
-                    {/* {convertDate(article.publishedAt)} */}
                     {item.user.nis}
                   </span>
                 </p>
+              </div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                <span className="text-sm font-medium text-white">
+                  {item._sum.score}
+                </span>
               </div>
             </div>
           </Link>
