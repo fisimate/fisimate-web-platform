@@ -3,11 +3,11 @@ import React from "react";
 
 export default function TBody({ data, action, fields }) {
   const renderField = (field, value) => {
-    if (field === "thumbnail") {
+    if (field === "icon") {
       return (
         <img
           src={value}
-          alt="Thumbnail"
+          alt="icon"
           className="h-16 w-16 object-cover rounded-md"
         />
       );
@@ -16,6 +16,18 @@ export default function TBody({ data, action, fields }) {
       return JSON.stringify(value);
     }
     return value;
+  };
+
+  const getField = (item, field) => {
+    if (field.includes(".")) {
+      const keys = field.split(".");
+      let value = item;
+      for (let key of keys) {
+        value = value[key];
+      }
+      return value;
+    }
+    return item[field];
   };
 
   return (
@@ -31,7 +43,7 @@ export default function TBody({ data, action, fields }) {
               className="border-b border-[#eee] px-4 py-5 dark:border-strokedark"
             >
               <p className="text-black dark:text-white">
-                {renderField(field, item[field])}
+                {renderField(field, getField(item, field))}
               </p>
             </td>
           ))}
