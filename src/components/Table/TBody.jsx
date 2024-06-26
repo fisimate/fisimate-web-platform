@@ -1,13 +1,17 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 export default function TBody({ data, action, fields }) {
   const renderField = (field, value) => {
     if (field === "icon") {
       return (
-        <img
+        <Image
           src={value}
           alt="icon"
+          width={240}
+          height={240}
+          loading="lazy"
           className="h-16 w-16 object-cover rounded-md"
         />
       );
