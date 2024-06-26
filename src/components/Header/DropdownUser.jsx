@@ -49,6 +49,11 @@ const DropdownUser = () => {
     push("/auth/login");
   };
 
+  const fullname = data?.data?.data?.fullname ?? "";
+  const roleName = data?.data?.data?.role?.name ?? "";
+  const capitalizedRoleName =
+    roleName.charAt(0).toUpperCase() + roleName.slice(1);
+
   return (
     <div className="relative">
       <Link
@@ -59,11 +64,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {data?.data?.data.fullname}
+            {fullname}
           </span>
-          <span className="block text-xs text-body"> 
-            {data?.data?.data.role.name.charAt(0).toUpperCase() + data?.data?.data.role.name.slice(1)}
-          </span>
+          <span className="block text-xs text-body">{capitalizedRoleName}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full overflow-hidden">
