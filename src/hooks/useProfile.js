@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useProfileQuery = (token) => {
+export const useGetProfile = (token) => {
   return useQuery({
     queryKey: ["user-info"],
     queryFn: async () => {
@@ -32,6 +32,20 @@ export const useUpdatePassword = ({ onSuccess, onError, token }) => {
   return useMutation({
     mutationFn: async (data) => {
       return await axiosInstance.post("/users/password/update", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
+  });
+};
+
+export const useUpdateProfilePicture = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async (data) => {
+      return await axiosInstance.post("/users/profile/picture", data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

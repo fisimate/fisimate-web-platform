@@ -1,81 +1,75 @@
 "use client";
-import BarChart from "@/components/Chart/BarChart";
-import { Flex, Select } from "@chakra-ui/react";
-import { FiUsers } from "react-icons/fi";
-import { RiFormula } from "react-icons/ri";
-import { PiBooksLight, PiExamLight } from "react-icons/pi";
+
 import CardStat from "@/components/CardStat";
+import BarChart from "@/components/Charts/BarChart";
+import Leaderboard from "@/components/Leaderboard";
+import Spinner from "@/components/Spinner";
+import { useGetDashboard } from "@/hooks/useDashboard";
+import { useGetToken } from "@/hooks/useToken";
+import React from "react";
+import { PiBook, PiBookOpenText, PiStudent } from "react-icons/pi";
+import { RiFormula } from "react-icons/ri";
 
 export default function Dashboard() {
+  const token = useGetToken();
+
+  const { data, isLoading } = useGetDashboard(token);
+
+  const stats = [
+    {
+      label: "Total Siswa",
+      value: data?.data?.data?.totalStudents,
+      icon: <PiStudent />,
+    },
+    {
+      label: "Total Materi",
+      value: data?.data?.data?.totalMaterials,
+      icon: <PiBook />,
+    },
+    {
+      label: "Total Kuis",
+      value: data?.data?.data?.totalExams,
+      icon: <PiBookOpenText />,
+    },
+    {
+      label: "Total Rumus",
+      value: data?.data?.data?.totalFormulas,
+      icon: <RiFormula />,
+    },
+  ];
+
   return (
-    <div className="">
-      <Flex direction={"row"} justify={"space-between"} gap={8} mt={6}>
-        <CardStat label={"Total Students"} value={12} icon={<FiUsers />} />
-        <CardStat label={"Total Exams"} value={24} icon={<PiExamLight />} />
-        <CardStat
-          label={"Total Materials"}
-          value={42}
-          icon={<PiBooksLight />}
-        />
-        <CardStat label={"Total Formulas"} value={90} icon={<RiFormula />} />
-      </Flex>
-      <div className="mt-6 flex justify-between gap-8">
-        <div className="bg-white p-8 w-3/5 rounded-xl">
-          <div className="flex justify-between">
-            <h2 className="font-semibold">Total Student Taking the Quiz</h2>
-            <Select w={"fit-content"}>
-              <option value="">Per Month</option>
-              <option value="">Per Day</option>
-            </Select>
-          </div>
-          <div className="w-full h-full flex items-center">
-            <div className="w-full">
-              <BarChart />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-8 w-2/5 rounded-xl">
-          <h2 className="font-semibold">Top Student</h2>
-          <div className="flex flex-col p-2 mt-5 gap-6">
-            <div className="bg-blue-500 p-4 rounded-full flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-5 items-center">
-                <div className="bg-white h-16 w-16 rounded-full"></div>
-                <p className="text-white font-medium text-lg">Tsaqif Akrom</p>
-              </div>
-              <div className="bg-gray-300 px-4 py-2 rounded-full">
-                <p className="font-extrabold">400</p>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-4 rounded-full flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-5 items-center">
-                <div className="bg-white h-16 w-16 rounded-full"></div>
-                <p className="text-white font-medium text-lg">Tsaqif Akrom</p>
-              </div>
-              <div className="bg-gray-300 px-4 py-2 rounded-full">
-                <p className="font-extrabold">400</p>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-4 rounded-full flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-5 items-center">
-                <div className="bg-white h-16 w-16 rounded-full"></div>
-                <p className="text-white font-medium text-lg">Tsaqif Akrom</p>
-              </div>
-              <div className="bg-gray-300 px-4 py-2 rounded-full">
-                <p className="font-extrabold">400</p>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-4 rounded-full flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-5 items-center">
-                <div className="bg-white h-16 w-16 rounded-full"></div>
-                <p className="text-white font-medium text-lg">Tsaqif Akrom</p>
-              </div>
-              <div className="bg-gray-300 px-4 py-2 rounded-full">
-                <p className="font-extrabold">400</p>
-              </div>
-            </div>
-          </div>
+    <React.Fragment>
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <p className="font-medium">Welcome, Admin!</p>
+          <h2 className="mb-1.5 text-title-md2 font-bold text-black dark:text-white">
+            Dashboard
+          </h2>
         </div>
       </div>
-    </div>
+      {isLoading ? (
+        <div className="flex justify-center w-full">
+          <Spinner />
+        </div>
+      ) : (
+        <React.Fragment>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+            {stats.map((item, i) => (
+              <CardStat
+                title={item.label}
+                total={item.value}
+                icon={item.icon}
+                key={i}
+              />
+            ))}
+          </div>
+          <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+            <BarChart data={data?.data?.data?.attemptsPerMonthChart} />
+            <Leaderboard data={data?.data?.data?.leaderboard} />
+          </div>
+        </React.Fragment>
+      )}
+    </React.Fragment>
   );
 }

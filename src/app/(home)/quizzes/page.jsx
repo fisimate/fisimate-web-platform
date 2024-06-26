@@ -1,4 +1,3 @@
-import ChatBubble from "@/components/ChatBubble";
 import { Input } from "@chakra-ui/react";
 import React from "react";
 import { FiInfo, FiSend } from "react-icons/fi";
@@ -27,8 +26,8 @@ export default function Quiz() {
           </div>
         </div>
 
-        <ChatBubble type={'reply'} />
-        <ChatBubble />
+        {/* <ChatBubble type={'reply'} />
+        <ChatBubble /> */}
       </div>
     </React.Fragment>
   );

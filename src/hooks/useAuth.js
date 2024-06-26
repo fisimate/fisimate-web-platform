@@ -10,13 +10,3 @@ export const useLogin = ({ onSuccess, onError }) => {
     onError,
   });
 };
-
-export const useRegister = ({ onSuccess, onError }) => {
-  return useMutation({
-    mutationFn: async (body) => {
-      return await axiosInstance.post("/auth/register", body);
-    },
-    onSuccess,
-    onError,
-  });
-};

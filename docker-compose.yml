@@ -2,8 +2,6 @@ version: '3.9'
 
 services:
   fisimate-web:
-    container_name: fisimate-web
-    image: fisimate-web
     build: .
     ports:
       - "3000:3000"

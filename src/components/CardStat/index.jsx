@@ -1,34 +1,20 @@
-import {
-  Card,
-  CardBody,
-  HStack,
-  Stat,
-  StatLabel,
-  StatNumber,
-} from "@chakra-ui/react";
-import Icon from "../Icon";
+import React from "react";
 
-export default function CardStat({ label, value, icon }) {
+export default function CardStat({ title, total, icon }) {
   return (
-    <Card
-      overflow={"hidden"}
-      variant={"unstyled"}
-      rounded={"2xl"}
-      w={"lg"}
-      px={8}
-      py={10}
-    >
-      <CardBody>
-        <HStack spacing={6}>
-          <Stat>
-            <StatNumber fontWeight={"bold"} mt={0} fontSize={"xxx-large"}>
-              {value}
-            </StatNumber>
-            <StatLabel color={"grey"} fontSize={"large"}>{label}</StatLabel>
-          </Stat>
-          <Icon icon={icon} />
-        </HStack>
-      </CardBody>
-    </Card>
+    <div className="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="flex text-primary h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4 text-2xl">
+        {icon}
+      </div>
+
+      <div className="mt-4 flex items-end justify-between">
+        <div>
+          <h4 className="text-title-md font-bold text-black dark:text-white">
+            {total}
+          </h4>
+          <span className="text-sm font-medium">{title}</span>
+        </div>
+      </div>
+    </div>
   );
 }

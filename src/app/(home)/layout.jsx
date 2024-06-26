@@ -1,5 +1,4 @@
-import Header from "@/components/Navbar/Header";
-import TextBreadCrumb from "@/components/TextBreadCrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
 export const metadata = {
   title: "Dashboard | Fisimate",
@@ -8,9 +7,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <Header>
-      <TextBreadCrumb capitalizeLinks />
+    <DefaultLayout>
       {children}
-    </Header>
+    </DefaultLayout>
   );
 }

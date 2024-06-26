@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import InitProvider from "@/utils/QueryProvider";
-import { ChakraProvider } from "@chakra-ui/react";
+import "flatpickr/dist/flatpickr.min.css";
+import InitChakraProvider from "@/utils/ChakraClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,9 +14,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#EDF2F7]">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
+      <body className="dark:bg-boxdark-2 dark:text-bodydark">
         <InitProvider>
-          <ChakraProvider>{children}</ChakraProvider>
+          <InitChakraProvider>{children}</InitChakraProvider>
         </InitProvider>
       </body>
     </html>
