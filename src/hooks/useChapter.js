@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useChapterQuery = (token) => {
+export const useGetChapters = ({ token }) => {
   return useQuery({
     queryKey: ["chapters"],
     queryFn: async () => {
@@ -14,9 +14,9 @@ export const useChapterQuery = (token) => {
   });
 };
 
-export const useChapterMutation = ({ onSuccess, onError, token }) => {
+export const useCreateChapter = ({ onSuccess, onError, token }) => {
   return useMutation({
-    mutationFn: async (body) => {
+    mutationFn: async ({ body }) => {
       return await axiosInstance.post("/chapters", body, {
         headers: {
           Authorization: `Bearer ${token}`,
