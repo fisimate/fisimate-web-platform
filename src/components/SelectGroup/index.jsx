@@ -34,7 +34,7 @@ export default function SelectGroup({
           <option value="" disabled className="text-body dark:text-bodydark">
             {defaultOption}
           </option>
-          {options.map((option, i) => (
+          {options?.map((option, i) => (
             <option
               key={i}
               value={option.id}
