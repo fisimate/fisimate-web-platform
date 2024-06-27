@@ -7,6 +7,7 @@ import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useGetBanks } from "@/hooks/useBank";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
@@ -110,7 +111,7 @@ export default function MaterialBank() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Bank Soal"} />
+      <Breadcrumb pageName={"Bank Materi"} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -129,7 +130,7 @@ export default function MaterialBank() {
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex justify-end mb-6">
             <Link href={"/banks/exams/create"}>
-              <Button text={"Create Soal"} />
+              <Button text={"Create Materi"} />
             </Link>
           </div>
           <Table
