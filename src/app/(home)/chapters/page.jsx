@@ -1,13 +1,12 @@
 "use client";
-import { useChapterQuery } from "@/hooks/useChapter";
+import { useGetChapters } from "@/hooks/useChapter";
+import { useGetToken } from "@/hooks/useToken";
 import { Spinner } from "@chakra-ui/react";
-import Cookies from "js-cookie";
 
 export default function ExamBank() {
-  const tokenCookie = Cookies.get("token");
-  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
+  const token = useGetToken();
 
-  const { data, isLoading } = useChapterQuery(token);
+  const { data, isLoading } = useGetChapters({ token });
 
   return (
     <div className="">
