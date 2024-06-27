@@ -130,7 +130,7 @@ export default function ExamBank() {
         )}
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex justify-end mb-6">
-            <Link href={"/users/create"}>
+            <Link href={"/banks/exams/create"}>
               <Button text={"Create Soal"} />
             </Link>
           </div>
