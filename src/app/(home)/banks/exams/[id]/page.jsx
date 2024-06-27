@@ -1,3 +1,4 @@
+"use client"
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
