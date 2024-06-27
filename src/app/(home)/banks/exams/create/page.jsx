@@ -121,7 +121,7 @@ export default function CreateExamBank() {
                 />
 
                 <div className="flex gap-4 justify-end">
-                  <Link href={"/articles"}>
+                  <Link href={"/banks/exams"}>
                     <Button
                       text={"Cancel"}
                       variant="outline"
