@@ -21,7 +21,9 @@ export default function SelectGroup({
 
   return (
     <div className="mb-4.5">
-      <label className="mb-2.5 block text-black text-sm dark:text-white">{label}</label>
+      <label className="mb-2.5 block text-black text-sm dark:text-white">
+        {label}
+      </label>
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedOption}

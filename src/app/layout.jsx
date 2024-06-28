@@ -4,8 +4,6 @@ import InitProvider from "@/utils/QueryProvider";
 import "flatpickr/dist/flatpickr.min.css";
 import InitChakraProvider from "@/utils/ChakraClientProvider";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata = {
   title: "Fisimate",
   description: "Fisimate web app",
@@ -17,9 +15,13 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className="dark:bg-boxdark-2 dark:text-bodydark">
+      <body>
         <InitProvider>
-          <InitChakraProvider>{children}</InitChakraProvider>
+          <InitChakraProvider>
+            <div className="dark:bg-boxdark-2 dark:text-bodydark">
+              {children}
+            </div>
+          </InitChakraProvider>
         </InitProvider>
       </body>
     </html>

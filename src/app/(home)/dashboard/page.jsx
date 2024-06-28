@@ -42,7 +42,7 @@ export default function Dashboard() {
     <React.Fragment>
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <p className="font-medium">Welcome, Admin!</p>
+          <p className="font-medium dark:text-white">Welcome, Admin!</p>
           <h2 className="mb-1.5 text-title-md2 font-bold text-black dark:text-white">
             Dashboard
           </h2>
