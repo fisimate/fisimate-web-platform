@@ -5,8 +5,9 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
-import { useGetChapters } from "@/hooks/useChapter";
+import { useDeleteChapter, useGetChapters } from "@/hooks/useChapter";
 import { useGetToken } from "@/hooks/useToken";
+import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -15,27 +16,9 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 export default function ExamBank() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
-  const [showAlert, setShowAlert] = useState({
-    isShow: false,
-    title: "",
-    message: "",
-    type: "error",
-  });
-
-  const data = [
-    {
-      id: "62987cb2-3067-4598-98c4-f518d186beb0",
-      name: "Keseimbangan Benda",
-      slug: "keseimbangan-benda",
-    },
-    {
-      id: "0ad20750-f303-46c1-93c2-f5264fb954e3",
-      name: "Keseimbangan Benda",
-      slug: "keseimbangan-benda",
-    },
-  ];
 
   const { push } = useRouter();
+  const toast = useToast();
 
   const openModal = (modalData) => {
     setSelectedData(modalData);
@@ -44,9 +27,9 @@ export default function ExamBank() {
 
   const closeModal = () => setModalOpen(false);
 
-  // const token = useGetToken();
+  const token = useGetToken();
 
-  // const { data, isLoading } = useGetChapters({ token });
+  const { data, isLoading, isRefetching, refetch } = useGetChapters({ token });
 
   const fields = ["name", "slug"];
 
@@ -61,10 +44,38 @@ export default function ExamBank() {
 
   const actions = (actionData) => (
     <>
-      <TableAction icon={<FiEdit />} action={() => push("/")} />
+      <TableAction
+        icon={<FiEdit />}
+        action={() => push(`/chapters/${actionData.id}`)}
+      />
       <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
     </>
   );
+
+  const { mutate } = useDeleteChapter({
+    chapterId: selectedData?.id,
+    token,
+    onSuccess: () => {
+      toast({
+        isClosable: true,
+        title: "Berhasil menghapus data",
+        status: "success",
+        position: "top-right",
+      });
+
+      refetch();
+    },
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        isClosable: true,
+        title: result.message,
+        status: "error",
+        position: "top-right",
+      });
+    },
+  });
 
   const modalActions = [
     {
@@ -76,7 +87,7 @@ export default function ExamBank() {
       label: "Delete",
       onClick: () => {
         if (selectedData) {
-          // mutate({ token, userId: selectedUser.id });
+          mutate();
 
           closeModal();
         }
@@ -96,13 +107,6 @@ export default function ExamBank() {
         actions={modalActions}
       />
       <div className="flex flex-col gap-10">
-        {showAlert.isShow && (
-          <Alert
-            type={"error"}
-            message={showAlert.message}
-            title={showAlert.title}
-          />
-        )}
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex justify-end mb-6">
             <Link href={"/chapters/create"}>
@@ -111,12 +115,11 @@ export default function ExamBank() {
           </div>
           <Table
             headers={headers}
-            // data={data?.data?.data}
-            data={data}
+            data={data?.data?.data}
             action={actions}
             fields={fields}
-            // isLoading={isLoading}
-            // isRefetching={isRefetching}
+            isLoading={isLoading}
+            isRefetching={isRefetching}
           />
         </div>
       </div>
