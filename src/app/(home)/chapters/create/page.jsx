@@ -4,7 +4,8 @@ import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import { useCreateChapter } from "@/hooks/useChapter";
 import { useFormData } from "@/hooks/useFormData";
-import { useToast, useToken } from "@chakra-ui/react";
+import { useGetToken } from "@/hooks/useToken";
+import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,7 +14,7 @@ import React from "react";
 export default function CreateChapter() {
   const { push } = useRouter();
   const toast = useToast();
-  const token = useToken();
+  const token = useGetToken();
 
   const { mutate, isPending } = useCreateChapter({
     token,
