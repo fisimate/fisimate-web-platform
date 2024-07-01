@@ -45,9 +45,7 @@ export default function CreateChapter() {
       name: "",
     },
     onSubmit: (values) => {
-      const formData = useFormData(values);
-
-      mutate({ body: formData });
+      mutate({ body: values });
     },
   });
 
