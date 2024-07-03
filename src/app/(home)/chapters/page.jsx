@@ -1,20 +1,128 @@
 "use client";
-import { useChapterQuery } from "@/hooks/useChapter";
-import { Spinner } from "@chakra-ui/react";
-import Cookies from "js-cookie";
+import Alert from "@/components/Alert";
+import Breadcrumb from "@/components/Breadcrumb";
+import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import Table from "@/components/Table";
+import TableAction from "@/components/Table/TableAction";
+import { useDeleteChapter, useGetChapters } from "@/hooks/useChapter";
+import { useGetToken } from "@/hooks/useToken";
+import { useToast } from "@chakra-ui/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function ExamBank() {
-  const tokenCookie = Cookies.get("token");
-  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
 
-  const { data, isLoading } = useChapterQuery(token);
+  const { push } = useRouter();
+  const toast = useToast();
+
+  const openModal = (modalData) => {
+    setSelectedData(modalData);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+
+  const token = useGetToken();
+
+  const { data, isLoading, isRefetching, refetch } = useGetChapters({ token });
+
+  const fields = ["name", "slug"];
+
+  const headers = [
+    {
+      title: "Name",
+    },
+    {
+      title: "Slug",
+    },
+  ];
+
+  const actions = (actionData) => (
+    <>
+      <TableAction
+        icon={<FiEdit />}
+        action={() => push(`/chapters/${actionData.id}`)}
+      />
+      <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
+    </>
+  );
+
+  const { mutate } = useDeleteChapter({
+    chapterId: selectedData?.id,
+    token,
+    onSuccess: () => {
+      toast({
+        isClosable: true,
+        title: "Berhasil menghapus data",
+        status: "success",
+        position: "top-right",
+      });
+
+      refetch();
+    },
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        isClosable: true,
+        title: result.message,
+        status: "error",
+        position: "top-right",
+      });
+    },
+  });
+
+  const modalActions = [
+    {
+      label: "Cancel",
+      onClick: closeModal,
+      primary: false,
+    },
+    {
+      label: "Delete",
+      onClick: () => {
+        if (selectedData) {
+          mutate();
+
+          closeModal();
+        }
+      },
+      primary: true,
+    },
+  ];
 
   return (
-    <div className="">
-      {isLoading && <Spinner />}
-      {data?.data?.data.map((item, i) => {
-        return <p key={i}>{JSON.stringify(item)}</p>;
-      })}
-    </div>
+    <React.Fragment>
+      <Breadcrumb pageName={"Data Bab"} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={"Delete data"}
+        content={"Are you sure want to delete this data?"}
+        actions={modalActions}
+      />
+      <div className="flex flex-col gap-10">
+        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+          <div className="flex justify-end mb-6">
+            <Link href={"/chapters/create"}>
+              <Button text={"Create Bab"} />
+            </Link>
+          </div>
+          <Table
+            headers={headers}
+            data={data?.data?.data}
+            action={actions}
+            fields={fields}
+            isLoading={isLoading}
+            isRefetching={isRefetching}
+          />
+        </div>
+      </div>
+    </React.Fragment>
   );
 }

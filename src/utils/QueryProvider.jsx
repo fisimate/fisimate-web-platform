@@ -9,7 +9,7 @@ const InitProvider = ({ children }) => {
         defaultOptions: {
           queries: {
             retry: 1,
-            refetchOnWindowFocus: false
+            refetchOnWindowFocus: true,
           },
         },
       })
