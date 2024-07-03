@@ -5,7 +5,7 @@ export const useGetBanks = ({ token, model }) => {
   return useQuery({
     queryKey: [`${model}-banks`],
     queryFn: async () => {
-      return await axiosInstance.get(`/${model}-banks`, {
+      return await axiosInstance.get(`/${model}-banks/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
