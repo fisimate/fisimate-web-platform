@@ -23,7 +23,7 @@ export default function CreateMaterialBank() {
 
   const { mutate, isPending } = useCreateBank({
     token,
-    model: "exam",
+    model: "material",
     onSuccess: () => {
       toast({
         title: "Data berhasil dibuat!",
