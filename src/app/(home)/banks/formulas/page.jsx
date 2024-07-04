@@ -1,12 +1,13 @@
 "use client";
-import Alert from "@/components/Alert";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
-import { useGetBanks } from "@/hooks/useBank";
+import { useDeleteBank, useGetBanks } from "@/hooks/useBank";
 import { useGetToken } from "@/hooks/useToken";
+import getLastPathUrl from "@/utils/getLastPathUrl";
+import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
