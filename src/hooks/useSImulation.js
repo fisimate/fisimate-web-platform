@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetSimulations = (token) => {
+export const useGetSimulations = ({ token }) => {
   return useQuery({
     queryKey: ["simulations"],
     queryFn: async () => {
