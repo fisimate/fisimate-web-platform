@@ -1,3 +1,4 @@
+"use client"
 import configs from "@/configs";
 import useSocket from "@/hooks/useSocket";
 import React, { useState } from "react";
