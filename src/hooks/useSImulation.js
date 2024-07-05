@@ -26,3 +26,17 @@ export const useGetOneSimulation = ({ token, simulationId }) => {
     },
   });
 };
+
+export const useUpdateSimulation = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async ({ dataId, body }) => {
+      return await axiosInstance.put(`/simulations/${dataId}`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
+  });
+};
