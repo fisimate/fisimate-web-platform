@@ -1,5 +1,5 @@
 import axiosInstance from "@/libs/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetMaterials = ({ simulationId, token }) => {
   return useQuery({
@@ -12,5 +12,73 @@ export const useGetMaterials = ({ simulationId, token }) => {
       });
     },
     retry: false,
+  });
+};
+
+export const useCreateMaterial = ({
+  onSuccess,
+  onError,
+  token,
+  simulationId,
+}) => {
+  return useMutation({
+    mutationFn: async ({ body }) => {
+      return await axiosInstance.post(
+        `/simulations/${simulationId}/materials`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess,
+    onError,
+  });
+};
+
+export const useUpdateMaterial = ({
+  onSuccess,
+  onError,
+  token,
+  simulationId,
+}) => {
+  return useMutation({
+    mutationFn: async ({ dataId, body }) => {
+      return await axiosInstance.put(
+        `/simulations/${simulationId}/materials/${dataId}`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess,
+    onError,
+  });
+};
+
+export const useDeleteMaterial = ({
+  onSuccess,
+  onError,
+  token,
+  simulationId,
+}) => {
+  return useMutation({
+    mutationFn: async ({ dataId }) => {
+      return await axiosInstance.delete(
+        `/simulations/${simulationId}/materials/${dataId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess,
+    onError,
   });
 };
