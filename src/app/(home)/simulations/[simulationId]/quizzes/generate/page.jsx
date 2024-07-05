@@ -1,6 +1,6 @@
 import configs from "@/configs";
 import useSocket from "@/hooks/useSocket";
-import React from "react";
+import React, { useState } from "react";
 
 export default function GenerateQuiz() {
   const [message, setMessage] = useState("");
