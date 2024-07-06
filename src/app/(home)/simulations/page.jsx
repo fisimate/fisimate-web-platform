@@ -2,7 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
-import { useGetSimulations } from "@/hooks/useSImulation";
+import { useGetSimulations } from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
 import { useRouter } from "next/navigation";
 import React from "react";
