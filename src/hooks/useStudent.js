@@ -26,3 +26,16 @@ export const getOneStudent = ({ token, dataId }) => {
     },
   });
 };
+
+export const getStudentHistory = ({ token, userId }) => {
+  return useQuery({
+    queryKey: ["students"],
+    queryFn: async () => {
+      return await axiosInstance.get(`/quizzes/attempt/history/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+  });
+};
