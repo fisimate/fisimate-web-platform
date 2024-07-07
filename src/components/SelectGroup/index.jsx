@@ -1,19 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function SelectGroup({
   label,
   options,
   onChange,
   defaultOption = "Pilih Opsi",
+  value,
   ...rest
 }) {
   const [selectedOption, setSelectedOption] = useState("");
-  const [isOptionSelected, setIsOptionSelected] = useState(false);
+
+  useEffect(() => {
+    setSelectedOption(value);
+  }, [value]);
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
-    setIsOptionSelected(true);
     if (onChange) {
       onChange(e);
     }
@@ -29,7 +32,7 @@ export default function SelectGroup({
           value={selectedOption}
           onChange={handleChange}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-            isOptionSelected ? "text-black dark:text-white" : ""
+            selectedOption ? "text-black dark:text-white" : ""
           }`}
           {...rest}
         >

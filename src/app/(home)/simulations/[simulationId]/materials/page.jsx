@@ -1,33 +1,52 @@
 "use client";
-
+import ErrorPage from "@/components/ErrorPage";
+import TableAction from "@/components/Table/TableAction";
 import { useGetMaterials } from "@/hooks/useMaterial";
+import { useGetToken } from "@/hooks/useToken";
 import { Spinner, useToast } from "@chakra-ui/react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function Material({ params }) {
-  const simulationId = params.simulationId;
+  const { simulationId } = params;
 
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  const { push } = useRouter();
   const toast = useToast();
-  const route = useRouter();
 
-  const tokenCookie = Cookies.get("token");
-  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
+  const openModal = (modalData) => {
+    setSelectedData(modalData);
+    setModalOpen(true);
+  };
 
-  const { data, isLoading, isError } = useGetMaterials({
+  const closeModal = () => setModalOpen(false);
+  const token = useGetToken();
+
+  const { data, isLoading, isLoadingError } = useGetMaterials({
     simulationId,
     token,
   });
 
-  if (isError) {
-    toast({
-      title: "Data not found!",
-      status: "error",
-      isClosable: true,
-    });
-
-    route.push("/simulations");
+  if (isLoadingError) {
+    return <ErrorPage />;
   }
+
+  const fields = [];
+
+  const headers = [{}];
+
+  const actions = (actionData) => (
+    <>
+      <TableAction
+        icon={<FiEdit />}
+        action={() => push(`/banks/formulas/${actionData.id}`)}
+      />
+      <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
+    </>
+  );
 
   return (
     <div className="">

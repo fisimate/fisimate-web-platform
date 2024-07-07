@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function EditExam({ params }) {
+export default function EditFormulas({ params }) {
   const { id } = params;
   const { push } = useRouter();
   const toast = useToast();
@@ -30,7 +30,7 @@ export default function EditExam({ params }) {
   } = useGetOneBank({
     token,
     dataId: id,
-    model: "exam",
+    model: "formula",
   });
 
   const { data: dataChapters } = useGetChapters({
@@ -64,7 +64,7 @@ export default function EditExam({ params }) {
 
   const { mutate, isPending } = useUpdateBank({
     token,
-    model: "exam",
+    model: "formula",
     onSuccess: () => {
       toast({
         title: "Data berhasil diperbarui!",
@@ -73,7 +73,7 @@ export default function EditExam({ params }) {
         position: "top-right",
       });
 
-      push("/banks/exams");
+      push("/banks/formulas");
     },
     onError: (error) => {
       const result = error.response.data;
@@ -97,13 +97,13 @@ export default function EditExam({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Bank Soal"} />
+      <Breadcrumb pageName={"Update Bank Rumus"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Bank Soal
+              Update Bank Rumus
             </h3>
           </div>
           {isLoadingData ? (
@@ -119,7 +119,7 @@ export default function EditExam({ params }) {
                   name="title"
                   value={formik.values.title}
                   onChange={handleChange}
-                  placeholder="Masukkan judul bank soal"
+                  placeholder="Masukkan judul bank rumus"
                 />
 
                 <FileInput
@@ -133,13 +133,13 @@ export default function EditExam({ params }) {
                 />
 
                 <FileInput
-                  label={"File Bank Soal"}
+                  label={"File Bank Rumus"}
                   type="file"
                   name="filePath"
                   onChange={(e) =>
                     formik.setFieldValue(e.target.name, e.target.files[0])
                   }
-                  placeholder="Pilih file bank soal"
+                  placeholder="Pilih file bank rumus"
                 />
 
                 <SelectGroup
@@ -152,7 +152,7 @@ export default function EditExam({ params }) {
                 />
 
                 <div className="flex gap-4 justify-end">
-                  <Link href={"/banks/exams"}>
+                  <Link href={"/banks/formulas"}>
                     <Button
                       text={"Cancel"}
                       variant="outline"

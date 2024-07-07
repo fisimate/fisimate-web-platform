@@ -6,9 +6,12 @@ import FileInput from "@/components/Input/FileInput";
 import InputGroup from "@/components/InputGroup";
 import SelectGroup from "@/components/SelectGroup";
 import Spinner from "@/components/Spinner";
-import { useGetOneBank, useUpdateBank } from "@/hooks/useBank";
 import { useGetChapters } from "@/hooks/useChapter";
 import { useFormData } from "@/hooks/useFormData";
+import {
+  useGetOneSimulation,
+  useUpdateSimulation,
+} from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -16,64 +19,33 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function EditExam({ params }) {
-  const { id } = params;
+export default function EditSimulation({ params }) {
+  const { simulationId } = params;
   const { push } = useRouter();
   const toast = useToast();
 
   const token = useGetToken();
 
-  const {
-    data,
-    isLoading: isLoadingData,
-    isLoadingError,
-  } = useGetOneBank({
+  const { data, isLoading, isLoadingError } = useGetOneSimulation({
     token,
-    dataId: id,
-    model: "exam",
+    simulationId,
   });
 
   const { data: dataChapters } = useGetChapters({
     token,
   });
 
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      icon: null,
-      filePath: null,
-      chapterId: "",
-    },
-    onSubmit: (values) => {
-      const formData = useFormData(values);
-
-      mutate({ body: formData, dataId: id });
-    },
-  });
-
-  useEffect(() => {
-    if (data) {
-      formik.setValues({
-        title: data?.data?.data?.title,
-        icon: null,
-        filePath: null,
-        chapterId: data?.data?.data?.chapterId,
-      });
-    }
-  }, [data]);
-
-  const { mutate, isPending } = useUpdateBank({
+  const { mutate, isPending } = useUpdateSimulation({
     token,
-    model: "exam",
     onSuccess: () => {
       toast({
         title: "Data berhasil diperbarui!",
         status: "success",
-        isClosable: true,
         position: "top-right",
+        isClosable: true,
       });
 
-      push("/banks/exams");
+      push("/simulations");
     },
     onError: (error) => {
       const result = error.response.data;
@@ -87,6 +59,29 @@ export default function EditExam({ params }) {
     },
   });
 
+  useEffect(() => {
+    if (data) {
+      formik.setValues({
+        title: data?.data?.data?.title,
+        icon: null,
+        chapterId: data?.data?.data?.chapterId,
+      });
+    }
+  }, [data]);
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      icon: null,
+      chapterId: "",
+    },
+    onSubmit: (values) => {
+      const formdData = useFormData(values);
+
+      mutate({ body: formdData, dataId: simulationId });
+    },
+  });
+
   const handleChange = (e) => {
     formik.setFieldValue(e.target.name, e.target.value);
   };
@@ -97,16 +92,16 @@ export default function EditExam({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Bank Soal"} />
+      <Breadcrumb pageName={"Update Simulation"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Bank Soal
+              Update Simulation
             </h3>
           </div>
-          {isLoadingData ? (
+          {isLoading ? (
             <div className="flex justify-center items-center px-4 py-5">
               <Spinner />
             </div>
@@ -119,7 +114,7 @@ export default function EditExam({ params }) {
                   name="title"
                   value={formik.values.title}
                   onChange={handleChange}
-                  placeholder="Masukkan judul bank soal"
+                  placeholder="Masukkan judul simulasi"
                 />
 
                 <FileInput
@@ -132,16 +127,6 @@ export default function EditExam({ params }) {
                   placeholder="Pilih icon"
                 />
 
-                <FileInput
-                  label={"File Bank Soal"}
-                  type="file"
-                  name="filePath"
-                  onChange={(e) =>
-                    formik.setFieldValue(e.target.name, e.target.files[0])
-                  }
-                  placeholder="Pilih file bank soal"
-                />
-
                 <SelectGroup
                   label={"Bab"}
                   name="chapterId"
@@ -152,7 +137,7 @@ export default function EditExam({ params }) {
                 />
 
                 <div className="flex gap-4 justify-end">
-                  <Link href={"/banks/exams"}>
+                  <Link href={"/simulations"}>
                     <Button
                       text={"Cancel"}
                       variant="outline"

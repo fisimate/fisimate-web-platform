@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useGetSimulations = (token) => {
+export const useGetSimulations = ({ token }) => {
   return useQuery({
     queryKey: ["simulations"],
     queryFn: async () => {
@@ -24,5 +24,19 @@ export const useGetOneSimulation = ({ token, simulationId }) => {
         },
       });
     },
+  });
+};
+
+export const useUpdateSimulation = ({ onSuccess, onError, token }) => {
+  return useMutation({
+    mutationFn: async ({ dataId, body }) => {
+      return await axiosInstance.put(`/simulations/${dataId}`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    onSuccess,
+    onError,
   });
 };

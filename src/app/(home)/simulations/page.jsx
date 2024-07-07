@@ -1,20 +1,62 @@
 "use client";
-import { useGetSimulations } from "@/hooks/useSImulation";
-import { Spinner } from "@chakra-ui/react";
-import Cookies from "js-cookie";
+import Breadcrumb from "@/components/Breadcrumb";
+import Table from "@/components/Table";
+import TableAction from "@/components/Table/TableAction";
+import { useGetSimulations } from "@/hooks/useSimulation";
+import { useGetToken } from "@/hooks/useToken";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { FiEdit, FiEye } from "react-icons/fi";
 
-export default function ExamBank() {
-  const tokenCookie = Cookies.get("token");
-  const token = tokenCookie ? JSON.parse(tokenCookie)?.access_token : null;
+export default function Simulation() {
+  const { push } = useRouter();
+  const token = useGetToken();
 
-  const { data, isLoading } = useGetSimulations(token);
+  const { data, isLoading, isRefetching } = useGetSimulations({ token });
+
+  const fields = ["icon", "title", "chapter.name"];
+
+  const headers = [
+    {
+      title: "Icon",
+    },
+    {
+      title: "Title",
+    },
+
+    {
+      title: "Bab",
+    },
+  ];
+
+  const actions = (actionData) => (
+    <>
+      <TableAction
+        icon={<FiEye />}
+        action={() => push(`/simulations/${actionData.id}`)}
+      />
+      <TableAction
+        icon={<FiEdit />}
+        action={() => push(`/simulations/${actionData.id}/edit`)}
+      />
+    </>
+  );
 
   return (
-    <div className="">
-      {isLoading && <Spinner />}
-      {data?.data?.data.map((item, i) => {
-        return <p>{JSON.stringify(item)}</p>;
-      })}
-    </div>
+    <React.Fragment>
+      <Breadcrumb pageName={"Simulasi"} />
+      <div className="flex flex-col gap-10">
+        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+          <Table
+            headers={headers}
+            data={data?.data?.data}
+            action={actions}
+            fields={fields}
+            isLoading={isLoading}
+            isRefetching={isRefetching}
+          />
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
