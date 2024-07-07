@@ -1,7 +1,7 @@
 import axiosInstance from "@/libs/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const getAllStudents = ({ token }) => {
+export const useGetAllStudents = ({ token }) => {
   return useQuery({
     queryKey: ["students"],
     queryFn: async () => {
@@ -14,7 +14,7 @@ export const getAllStudents = ({ token }) => {
   });
 };
 
-export const getOneStudent = ({ token, dataId }) => {
+export const useGetOneStudent = ({ token, dataId }) => {
   return useQuery({
     queryKey: ["students"],
     queryFn: async () => {
@@ -27,7 +27,7 @@ export const getOneStudent = ({ token, dataId }) => {
   });
 };
 
-export const getStudentHistory = ({ token, userId }) => {
+export const useGetStudentHistories = ({ token, userId }) => {
   return useQuery({
     queryKey: ["students"],
     queryFn: async () => {
