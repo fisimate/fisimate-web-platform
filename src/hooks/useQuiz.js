@@ -82,3 +82,16 @@ export const useDeleteQuiz = ({ onSuccess, onError, token, simulationId }) => {
     onSuccess,
   });
 };
+
+export const useGetQuizHistories = ({ token, studentId }) => {
+  return useQuery({
+    queryKey: [`histories-${studentId}`],
+    queryFn: async () => {
+      return await axiosInstance.get(`/quizzes/attempt/history/${studentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+  });
+};
