@@ -14,7 +14,7 @@ export default function Table({
   return (
     <div className="max-w-full overflow-x-auto">
       <table className="w-full table-auto">
-        <Thead data={headers} />
+        <Thead data={headers} action={action} />
         {isLoading || isRefetching ? (
           <tbody>
             <tr>
