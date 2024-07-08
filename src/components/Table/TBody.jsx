@@ -4,10 +4,10 @@ import React from "react";
 
 export default function TBody({ data, action, fields }) {
   const renderField = (field, value) => {
-    if (field === "icon") {
+    if (field === "icon" || field == "user.profilePicture") {
       return (
         <Image
-          src={value}
+          src={value ?? "/images/user/user-avatar.png"}
           alt="icon"
           width={240}
           height={240}
@@ -53,11 +53,15 @@ export default function TBody({ data, action, fields }) {
               </p>
             </td>
           ))}
-          <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-            <div className="flex items-center space-x-3.5">
-              <p className="text-black dark:text-white flex gap-3">{action(item)}</p>
-            </div>
-          </td>
+          {action && (
+            <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+              <div className="flex items-center space-x-3.5">
+                <p className="text-black dark:text-white flex gap-3">
+                  {action(item)}
+                </p>
+              </div>
+            </td>
+          )}
         </tr>
       ))}
     </tbody>
