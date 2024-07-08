@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Thead({ data }) {
+export default function Thead({ data, action }) {
   return (
     <thead>
       <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -17,9 +17,11 @@ export default function Thead({ data }) {
             {header.title}
           </th>
         ))}
-        <th className="px-4 py-4 font-medium text-black dark:text-white">
-          Actions
-        </th>
+        {action && (
+          <th className="px-4 py-4 font-medium text-black dark:text-white">
+            Actions
+          </th>
+        )}
       </tr>
     </thead>
   );
