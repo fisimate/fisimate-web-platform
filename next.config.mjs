@@ -2,20 +2,7 @@
 const nextConfig = {
   output: "standalone",
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "fisimate-api-gg6y243dza-et.a.run.app",
-        port: "",
-        pathname: "/storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "storage.googleapis.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
+    domains: ["storage.googleapis.com", "fisimate-web-gg6y243dza-et.a.run.app"],
   },
 };
 
