@@ -6,12 +6,9 @@ export default function TBody({ data, action, fields }) {
   const renderField = (field, value) => {
     if (field === "icon" || field == "user.profilePicture") {
       return (
-        <Image
+        <img
           src={value ?? "/images/user/user-avatar.png"}
           alt="icon"
-          width={240}
-          height={240}
-          loading="lazy"
           className="h-16 w-16 object-cover rounded-md"
         />
       );
