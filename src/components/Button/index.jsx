@@ -3,7 +3,7 @@ import React from "react";
 export default function Button({
   variant = "solid",
   text,
-  size = "lg",
+  size = "md",
   isLoading = false,
   ...rest
 }) {
