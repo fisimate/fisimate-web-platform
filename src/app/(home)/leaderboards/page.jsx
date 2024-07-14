@@ -1,11 +1,9 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
-import Spinner from "@/components/Spinner";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useGetLeaderboard } from "@/hooks/useDashboard";
 import { useGetToken } from "@/hooks/useToken";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FiEye } from "react-icons/fi";
