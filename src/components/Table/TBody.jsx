@@ -9,7 +9,7 @@ export default function TBody({ data, action, fields }) {
         <img
           src={value ?? "/images/user/user-avatar.png"}
           alt="icon"
-          className="h-16 w-16 object-cover rounded-md"
+          className="h-16 w-16 object-contain rounded-md"
         />
       );
     }
