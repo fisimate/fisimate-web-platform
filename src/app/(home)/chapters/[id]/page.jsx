@@ -2,9 +2,12 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
+import FileInput from "@/components/Input/FileInput";
+import TextArea from "@/components/Input/TextArea";
 import InputGroup from "@/components/InputGroup";
 import Spinner from "@/components/Spinner";
 import { useGetOneChapter, useUpdateChapter } from "@/hooks/useChapter";
+import { useFormData } from "@/hooks/useFormData";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -51,9 +54,13 @@ export default function UpdateChapter({ params }) {
   const formik = useFormik({
     initialValues: {
       name: "",
+      icon: null,
+      shortDescription: "",
     },
     onSubmit: (values) => {
-      mutate({ body: values });
+      const formData = useFormData(values);
+
+      mutate({ body: formData });
     },
   });
 
@@ -61,6 +68,7 @@ export default function UpdateChapter({ params }) {
     if (data) {
       formik.setValues({
         name: data?.data?.data?.name,
+        shortDescription: data?.data?.data?.shortDescription,
       });
     }
   }, [data]);
@@ -99,6 +107,25 @@ export default function UpdateChapter({ params }) {
                   value={formik.values.name}
                   onChange={handleChange}
                   placeholder="Masukkan judul bab"
+                />
+
+                <FileInput
+                  label={"Icon"}
+                  type="file"
+                  name="icon"
+                  onChange={(e) =>
+                    formik.setFieldValue(e.target.name, e.target.files[0])
+                  }
+                  placeholder="Pilih icon"
+                />
+
+                <TextArea
+                  label={"Deskripsi Singkat"}
+                  type="text"
+                  name="shortDescription"
+                  value={formik.values.shortDescription}
+                  onChange={handleChange}
+                  placeholder="Masukkan deskripsi singkat"
                 />
 
                 <div className="flex gap-4 justify-end">

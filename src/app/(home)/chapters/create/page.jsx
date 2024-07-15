@@ -1,6 +1,8 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
+import FileInput from "@/components/Input/FileInput";
+import TextArea from "@/components/Input/TextArea";
 import InputGroup from "@/components/InputGroup";
 import { useCreateChapter } from "@/hooks/useChapter";
 import { useFormData } from "@/hooks/useFormData";
@@ -43,9 +45,13 @@ export default function CreateChapter() {
   const formik = useFormik({
     initialValues: {
       name: "",
+      icon: null,
+      shortDescription: "",
     },
     onSubmit: (values) => {
-      mutate({ body: values });
+      const formData = useFormData(values);
+
+      mutate({ body: formData });
     },
   });
 
@@ -72,6 +78,24 @@ export default function CreateChapter() {
                 name="name"
                 onChange={handleChange}
                 placeholder="Masukkan judul bab baru"
+              />
+
+              <FileInput
+                label={"Icon"}
+                type="file"
+                name="icon"
+                onChange={(e) =>
+                  formik.setFieldValue(e.target.name, e.target.files[0])
+                }
+                placeholder="Pilih icon"
+              />
+
+              <TextArea
+                label={"Deskripsi Singkat"}
+                type="text"
+                name="shortDescription"
+                onChange={handleChange}
+                placeholder="Masukkan deskripsi singkat"
               />
 
               <div className="flex gap-4 justify-end">
