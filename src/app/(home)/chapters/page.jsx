@@ -7,6 +7,7 @@ import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useDeleteChapter, useGetChapters } from "@/hooks/useChapter";
 import { useGetToken } from "@/hooks/useToken";
+import limitString from "@/utils/limitString";
 import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,14 +32,17 @@ export default function ExamBank() {
 
   const { data, isLoading, isRefetching, refetch } = useGetChapters({ token });
 
-  const fields = ["name", "slug"];
+  const fields = ["icon", "name", "shortDescription"];
 
   const headers = [
+    {
+      title: "Icon",
+    },
     {
       title: "Name",
     },
     {
-      title: "Slug",
+      title: "Short Description",
     },
   ];
 
@@ -96,6 +100,11 @@ export default function ExamBank() {
     },
   ];
 
+  const formattedData = data?.data?.data.map((item) => ({
+    ...item,
+    shortDescription: limitString(item.shortDescription),
+  }));
+
   return (
     <React.Fragment>
       <Breadcrumb pageName={"Data Bab"} />
@@ -115,7 +124,7 @@ export default function ExamBank() {
           </div>
           <Table
             headers={headers}
-            data={data?.data?.data}
+            data={formattedData}
             action={actions}
             fields={fields}
             isLoading={isLoading}
