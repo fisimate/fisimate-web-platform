@@ -4,7 +4,7 @@ import React from "react";
 
 export default function TBody({ data, action, fields }) {
   const renderField = (field, value) => {
-    if (field === "icon" || field == "user.profilePicture") {
+    if (field === "icon" || field == "user.profilePicture" || field == "profilePicture") {
       return (
         <img
           src={value ?? "/images/user/user-avatar.png"}
