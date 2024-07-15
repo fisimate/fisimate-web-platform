@@ -89,7 +89,7 @@ export default function Login() {
                 </Link>
 
                 <p className="2xl:px-20 text-body">
-                  Bridging to Interact with the World
+                  Inovasi Belajar Fisika untuk Masa Depan
                 </p>
 
                 <span className="mt-15 inline-block">
