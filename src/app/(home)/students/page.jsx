@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { LuKeyRound } from "react-icons/lu";
 
 export default function StudentPage() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -78,6 +79,10 @@ export default function StudentPage() {
       <TableAction
         icon={<FiEdit />}
         action={() => push(`/students/${actionData.id}`)}
+      />
+      <TableAction
+        icon={<LuKeyRound />}
+        action={() => push(`/students/${actionData.id}/reset`)}
       />
       <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
     </>
