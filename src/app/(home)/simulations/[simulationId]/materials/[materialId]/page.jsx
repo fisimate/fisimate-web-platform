@@ -1,3 +1,4 @@
+"use client"
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import FileInput from "@/components/Input/FileInput";
