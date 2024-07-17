@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import FileInput from "@/components/Input/FileInput";
@@ -40,7 +40,7 @@ export default function EditMaterial({ params }) {
         position: "top-right",
       });
 
-      push(`/simulation/${simulationId}`);
+      push(`/simulations/${simulationId}`);
     },
     onError: (error) => {
       const result = error.response.data;
@@ -78,7 +78,7 @@ export default function EditMaterial({ params }) {
               />
 
               <div className="flex gap-4 justify-end">
-                <Link href={`/simulation/${simulationId}`}>
+                <Link href={`/simulations/${simulationId}`}>
                   <Button
                     text={"Cancel"}
                     variant="outline"
