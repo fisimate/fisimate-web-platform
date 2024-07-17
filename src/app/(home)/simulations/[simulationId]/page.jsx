@@ -15,9 +15,9 @@ export default function SimulationDetail({ params }) {
   const token = useGetToken();
   const toast = useToast();
 
-  // const { data: dataMaterials, isLoading: isLoadingMaterial } = useGetMaterials(
-  //   { simulationId, token }
-  // );
+  const { data: dataMaterials, isLoading: isLoadingMaterial } = useGetMaterials(
+    { simulationId, token }
+  );
 
   const {
     data: dataQuiz,
@@ -157,7 +157,12 @@ export default function SimulationDetail({ params }) {
       ) : (
         dataQuiz?.data?.data?.question.map((item) => (
           <React.Fragment>
-            <QuizCard question={item} mutateDeleteQuiz={mutateDeleteQuiz} />
+            <QuizCard
+              question={item}
+              mutateDeleteQuiz={mutateDeleteQuiz}
+              setPopupOpen={setPopupOpen}
+              popupOpen={popupOpen}
+            />
           </React.Fragment>
         ))
       )}
@@ -426,7 +431,7 @@ export function PopUp(props) {
   );
 }
 
-function QuizCard({ question, mutateDeleteQuiz }) {
+function QuizCard({ question, mutateDeleteQuiz, setPopupOpen, popupOpen }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -482,7 +487,10 @@ function QuizCard({ question, mutateDeleteQuiz }) {
             <div className="flex flex-col gap-2">
               <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
                 {question?.quizOptions.map((item, i) => (
-                  <li class="flex items-center" key={i}>
+                  <li
+                    class="flex items-center text-black dark:text-white"
+                    key={i}
+                  >
                     {item.isCorrect ? (
                       <svg
                         class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
@@ -514,7 +522,7 @@ function QuizCard({ question, mutateDeleteQuiz }) {
           <div className="absolute right-4 top-4">
             <DropdownDefault
               actionDelete={() => openModal(question)}
-              // actionEdit={() => } open the modal popup and fill the data with actiondata
+              actionEdit={() => setPopupOpen(!popupOpen)}
             />
           </div>
         </div>
