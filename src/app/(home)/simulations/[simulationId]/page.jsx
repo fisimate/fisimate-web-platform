@@ -1,23 +1,33 @@
 "use client";
+import Breadcrumb from "@/components/Breadcrumb";
 import DropdownDefault from "@/components/Dropdown/DropdownDefault";
 import Modal from "@/components/Modal";
 import SelectGroup from "@/components/SelectGroup";
 import Spinner from "@/components/Spinner";
+import Table from "@/components/Table";
+import TableAction from "@/components/Table/TableAction";
 import { useGetMaterials } from "@/hooks/useMaterial";
 import { useCreateQuiz, useDeleteQuiz, useGetQuizzes } from "@/hooks/useQuiz";
 import { useGetToken } from "@/hooks/useToken";
+import getLastPathUrl from "@/utils/getLastPathUrl";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { FiEdit } from "react-icons/fi";
 
 export default function SimulationDetail({ params }) {
+  const [formattedData, setFormattedData] = useState([]);
   const { simulationId } = params;
   const token = useGetToken();
   const toast = useToast();
+  const { push } = useRouter();
 
-  const { data: dataMaterials, isLoading: isLoadingMaterial } = useGetMaterials(
-    { simulationId, token }
-  );
+  const {
+    data: dataMaterials,
+    isLoading: isLoadingMaterials,
+    isRefetching: isRefetchingMaterials,
+  } = useGetMaterials({ simulationId, token });
 
   const {
     data: dataQuiz,
@@ -109,9 +119,56 @@ export default function SimulationDetail({ params }) {
     },
   });
 
+  const fields = ["filePath"];
+  const headers = [
+    {
+      title: "File Materi",
+    },
+  ];
+
+  const tableActions = (actionData) => (
+    <>
+      <TableAction
+        icon={<FiEdit />}
+        action={() =>
+          push(`/simulations/${simulationId}/materials/${actionData.id}`)
+        }
+      />
+    </>
+  );
+
+  useEffect(() => {
+    if (dataMaterials) {
+      setFormattedData([
+        {
+          ...dataMaterials?.data?.data,
+          filePath: getLastPathUrl(dataMaterials?.data?.data?.filePath),
+        },
+      ]);
+    }
+  }, [dataMaterials]);
+
   return (
     <React.Fragment>
+      <Breadcrumb pageName={"Detail Simulasi"} />
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
+            Materi
+          </h3>
+        </div>
+      </div>
+      <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <Table
+          headers={headers}
+          data={formattedData}
+          fields={fields}
+          action={tableActions}
+          isLoading={isLoadingMaterials}
+          isRefetching={isRefetchingMaterials}
+        />
+      </div>
+      <div className="mt-5 flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
             List Pertanyaan
@@ -139,7 +196,7 @@ export default function SimulationDetail({ params }) {
           Tambah
         </button>
 
-        {/* <!-- ===== Task Popup Start ===== --> */}
+        {/* <!-- ===== Popup Start ===== --> */}
         <PopUp
           popupOpen={popupOpen}
           setPopupOpen={setPopupOpen}
@@ -147,11 +204,11 @@ export default function SimulationDetail({ params }) {
           isPending={isPending}
           refetch={refetchQuiz}
         />
-        {/* <!-- ===== Task Popup End ===== --> */}
+        {/* <!-- ===== Popup End ===== --> */}
       </div>
 
       {isLoadingQuiz || isRefetchingQuiz ? (
-        <div className="flex justify-center w-full py-5 bg-white">
+        <div className="flex justify-center w-full py-5 bg-white border border-stroke dark:border-strokedark dark:bg-boxdark">
           <Spinner />
         </div>
       ) : (
