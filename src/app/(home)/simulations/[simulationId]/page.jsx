@@ -84,6 +84,31 @@ export default function SimulationDetail({ params }) {
     },
   });
 
+  const { mutate: mutateDeleteQuiz } = useDeleteQuiz({
+    token,
+    simulationId,
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        title: result.message,
+        status: "error",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Berhasil hapus data!",
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+      });
+
+      refetchQuiz();
+    },
+  });
+
   return (
     <React.Fragment>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
@@ -132,7 +157,7 @@ export default function SimulationDetail({ params }) {
       ) : (
         dataQuiz?.data?.data?.question.map((item) => (
           <React.Fragment>
-            <QuizCard question={item} />
+            <QuizCard question={item} mutateDeleteQuiz={mutateDeleteQuiz} />
           </React.Fragment>
         ))
       )}
@@ -401,7 +426,7 @@ export function PopUp(props) {
   );
 }
 
-function QuizCard({ question }) {
+function QuizCard({ question, mutateDeleteQuiz }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -422,7 +447,7 @@ function QuizCard({ question }) {
       label: "Delete",
       onClick: () => {
         if (selectedData) {
-          mutate({ token, dataId: selectedData.id });
+          mutateDeleteQuiz({ dataId: selectedData.id });
 
           closeModal();
         }
@@ -430,10 +455,6 @@ function QuizCard({ question }) {
       primary: true,
     },
   ];
-
-  const {} = useDeleteQuiz({
-    token, simulationId, 
-  })
 
   return (
     <React.Fragment>
@@ -491,7 +512,10 @@ function QuizCard({ question }) {
           </div>
 
           <div className="absolute right-4 top-4">
-            <DropdownDefault />
+            <DropdownDefault
+              actionDelete={() => openModal(question)}
+              // actionEdit={() => } open the modal popup and fill the data with actiondata
+            />
           </div>
         </div>
       </div>
