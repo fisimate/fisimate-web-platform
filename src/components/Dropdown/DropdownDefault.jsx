@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function DropdownDefault() {
+export default function DropdownDefault({ actionDelete, actionEdit }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
@@ -70,7 +70,10 @@ export default function DropdownDefault() {
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <button className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+        <button
+          onClick={actionEdit}
+          className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+        >
           <svg
             className="fill-current"
             width="16"
@@ -93,7 +96,10 @@ export default function DropdownDefault() {
           </svg>
           Edit
         </button>
-        <button className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+        <button
+          onClick={actionDelete}
+          className="flex w-full items-center gap-2 rounded-sm px-4 py-1.5 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+        >
           <svg
             className="fill-current"
             width="16"
