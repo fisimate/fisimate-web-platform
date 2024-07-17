@@ -20,7 +20,7 @@ export default function Table({
             <tr>
               <td
                 className="border-b border-[#eee] px-4 py-5"
-                colSpan={headers.length + 1}
+                colSpan={headers.length + 2}
               >
                 <div className="flex justify-center items-center">
                   <Spinner />
