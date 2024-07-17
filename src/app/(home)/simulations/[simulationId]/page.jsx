@@ -7,7 +7,12 @@ import Spinner from "@/components/Spinner";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useGetMaterials } from "@/hooks/useMaterial";
-import { useCreateQuiz, useDeleteQuiz, useGetQuizzes } from "@/hooks/useQuiz";
+import {
+  useCreateQuiz,
+  useDeleteQuiz,
+  useGetQuizzes,
+  useUpdateQuiz,
+} from "@/hooks/useQuiz";
 import { useGetToken } from "@/hooks/useToken";
 import getLastPathUrl from "@/utils/getLastPathUrl";
 import { useToast } from "@chakra-ui/react";
@@ -40,7 +45,6 @@ export default function SimulationDetail({ params }) {
   });
 
   const [popupOpen, setPopupOpen] = useState(false);
-
   const trigger = useRef(null);
   const popup = useRef(null);
 
@@ -58,7 +62,7 @@ export default function SimulationDetail({ params }) {
 
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [popupOpen]);
 
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
@@ -67,14 +71,13 @@ export default function SimulationDetail({ params }) {
     };
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
-  });
+  }, [popupOpen]);
 
   const { mutate, isPending } = useCreateQuiz({
     token,
     simulationId,
     onError: (error) => {
       const result = error.response.data;
-
       toast({
         title: result.message,
         status: "error",
@@ -89,7 +92,6 @@ export default function SimulationDetail({ params }) {
         isClosable: true,
         position: "top-right",
       });
-
       refetchQuiz();
     },
   });
@@ -99,7 +101,6 @@ export default function SimulationDetail({ params }) {
     simulationId,
     onError: (error) => {
       const result = error.response.data;
-
       toast({
         title: result.message,
         status: "error",
@@ -119,22 +120,42 @@ export default function SimulationDetail({ params }) {
     },
   });
 
+  const { mutate: mutateUpdateQuiz, isPending: isPendingUpdateQuiz } =
+    useUpdateQuiz({
+      token,
+      simulationId,
+      onSuccess: () => {
+        toast({
+          title: "Berhasil update data!",
+          status: "success",
+          isClosable: true,
+          position: "top-right",
+        });
+
+        refetchQuiz();
+      },
+      onError: (error) => {
+        const result = error.response.data;
+
+        toast({
+          title: result.message,
+          status: "error",
+          isClosable: true,
+          position: "top-right",
+        });
+      },
+    });
+
   const fields = ["filePath"];
-  const headers = [
-    {
-      title: "File Materi",
-    },
-  ];
+  const headers = [{ title: "File Materi" }];
 
   const tableActions = (actionData) => (
-    <>
-      <TableAction
-        icon={<FiEdit />}
-        action={() =>
-          push(`/simulations/${simulationId}/materials/${actionData.id}`)
-        }
-      />
-    </>
+    <TableAction
+      icon={<FiEdit />}
+      action={() =>
+        push(`/simulations/${simulationId}/materials/${actionData.id}`)
+      }
+    />
   );
 
   useEffect(() => {
@@ -148,15 +169,49 @@ export default function SimulationDetail({ params }) {
     }
   }, [dataMaterials]);
 
+  const optionsData = [
+    { id: true, name: "Benar" },
+    { id: false, name: "Salah" },
+  ];
+
+  const [files, setFiles] = useState(null);
+
+  const formik = useFormik({
+    initialValues: {
+      text: "",
+      options: [
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+      ],
+    },
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append("text", values.text);
+      formData.append(
+        "options",
+        JSON.stringify(
+          values.options.map((option) => ({
+            text: option.text,
+            isCorrect: option.isCorrect === "true",
+          }))
+        )
+      );
+      if (files) formData.append("image", files);
+      mutate({ body: formData });
+      if (!isPending) setPopupOpen(false);
+      formik.resetForm();
+    },
+  });
+
   return (
     <React.Fragment>
       <Breadcrumb pageName={"Detail Simulasi"} />
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
-            Materi
-          </h3>
-        </div>
+        <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
+          Materi
+        </h3>
       </div>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
         <Table
@@ -169,12 +224,9 @@ export default function SimulationDetail({ params }) {
         />
       </div>
       <div className="mt-5 flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
-            List Pertanyaan
-          </h3>
-        </div>
-
+        <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
+          List Pertanyaan
+        </h3>
         <button
           ref={trigger}
           onClick={() => setPopupOpen(!popupOpen)}
@@ -195,110 +247,54 @@ export default function SimulationDetail({ params }) {
           </svg>
           Tambah
         </button>
-
-        {/* <!-- ===== Popup Start ===== --> */}
         <PopUp
           popupOpen={popupOpen}
           setPopupOpen={setPopupOpen}
-          mutate={mutate}
+          formik={formik}
+          setFiles={setFiles}
+          files={files}
           isPending={isPending}
-          refetch={refetchQuiz}
+          optionsData={optionsData}
         />
-        {/* <!-- ===== Popup End ===== --> */}
       </div>
-
       {isLoadingQuiz || isRefetchingQuiz ? (
         <div className="flex justify-center w-full py-5 bg-white border border-stroke dark:border-strokedark dark:bg-boxdark">
           <Spinner />
         </div>
       ) : (
         dataQuiz?.data?.data?.question.map((item) => (
-          <React.Fragment>
-            <QuizCard
-              question={item}
-              mutateDeleteQuiz={mutateDeleteQuiz}
-              setPopupOpen={setPopupOpen}
-              popupOpen={popupOpen}
-            />
-          </React.Fragment>
+          <QuizCard
+            key={item.id}
+            question={item}
+            mutateDeleteQuiz={mutateDeleteQuiz}
+            setPopupOpen={setPopupOpen}
+            popupOpen={popupOpen}
+            formik={formik}
+          />
         ))
       )}
     </React.Fragment>
   );
 }
 
-export function PopUp(props) {
-  const [files, setFiles] = useState(null);
-
-  const optionsData = [
-    {
-      id: true,
-      name: "Benar",
-    },
-    {
-      id: false,
-      name: "Salah",
-    },
-  ];
-
-  const formik = useFormik({
-    initialValues: {
-      text: "",
-      options: [
-        {
-          text: "",
-          isCorrect: false,
-        },
-        {
-          text: "",
-          isCorrect: false,
-        },
-        {
-          text: "",
-          isCorrect: false,
-        },
-        {
-          text: "",
-          isCorrect: false,
-        },
-      ],
-    },
-    onSubmit: (values) => {
-      const formData = new FormData();
-
-      formData.append("text", values.text);
-      formData.append(
-        "options",
-        JSON.stringify(
-          values.options.map((option) => ({
-            text: option.text,
-            isCorrect: option.isCorrect === "true",
-          }))
-        )
-      );
-      if (files) {
-        formData.append("image", files);
-      }
-
-      props.mutate({ body: formData });
-
-      if (!props.isPending) {
-        props.setPopupOpen(false);
-      }
-
-      formik.resetForm();
-    },
-  });
-
+function PopUp({
+  popupOpen,
+  setPopupOpen,
+  formik,
+  files,
+  setFiles,
+  isPending,
+  optionsData,
+}) {
   return (
     <div
       className={`fixed left-0 top-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 px-4 py-5 ${
-        props.popupOpen === true ? "block" : "hidden"
+        popupOpen === true ? "block" : "hidden"
       }`}
     >
       <div className="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
         <button
-          onClick={() => props.setPopupOpen(false)}
+          onClick={() => setPopupOpen(false)}
           className="absolute right-1 top-1 sm:right-5 sm:top-5"
         >
           <svg
@@ -337,14 +333,13 @@ export function PopUp(props) {
               className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
             />
           </div>
-
           {formik.values.options.map((option, index) => (
             <div className="mb-5" key={index}>
               <label
                 htmlFor={`options.${index}.text`}
                 className="mb-2.5 block font-medium text-black dark:text-white"
               >
-                Opsi Jawaban {index + 1}
+                Jawaban {index + 1}
               </label>
               <div className="flex items-center gap-2.5">
                 <input
@@ -452,10 +447,10 @@ export function PopUp(props) {
           </div>
           <button
             type="submit"
-            disabled={props.isPending}
+            disabled={isPending}
             className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90"
           >
-            {props.isPending ? (
+            {isPending ? (
               <>
                 <span className="animate-spin">
                   <svg
@@ -488,7 +483,13 @@ export function PopUp(props) {
   );
 }
 
-function QuizCard({ question, mutateDeleteQuiz, setPopupOpen, popupOpen }) {
+function QuizCard({
+  question,
+  mutateDeleteQuiz,
+  setPopupOpen,
+  popupOpen,
+  formik,
+}) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -579,7 +580,17 @@ function QuizCard({ question, mutateDeleteQuiz, setPopupOpen, popupOpen }) {
           <div className="absolute right-4 top-4">
             <DropdownDefault
               actionDelete={() => openModal(question)}
-              actionEdit={() => setPopupOpen(!popupOpen)}
+              actionEdit={() => {
+                setPopupOpen(!popupOpen);
+                formik.setFieldValue("text", question.text);
+                question?.quizOptions.forEach((option, index) => {
+                  formik.setFieldValue(`options[${index}].text`, option.text);
+                  formik.setFieldValue(
+                    `options[${index}].isCorrect`,
+                    option.isCorrect
+                  );
+                });
+              }}
             />
           </div>
         </div>
