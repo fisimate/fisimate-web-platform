@@ -23,6 +23,8 @@ import { FiEdit } from "react-icons/fi";
 
 export default function SimulationDetail({ params }) {
   const [formattedData, setFormattedData] = useState([]);
+  const [isPopupForUpdate, setIsPopupForUpdate] = useState(false);
+  const [deleteImage, setDeleteImage] = useState(false);
   const { simulationId } = params;
   const token = useGetToken();
   const toast = useToast();
@@ -147,7 +149,7 @@ export default function SimulationDetail({ params }) {
     });
 
   const fields = ["filePath"];
-  const headers = [{ title: "File Materi" }];
+  const headers = [{ Header: "File Materi", accessor: "fileMateri" }];
 
   const tableActions = (actionData) => (
     <TableAction
@@ -170,8 +172,8 @@ export default function SimulationDetail({ params }) {
   }, [dataMaterials]);
 
   const optionsData = [
-    { id: true, name: "Benar" },
-    { id: false, name: "Salah" },
+    { value: true, name: "Benar" },
+    { value: false, name: "Salah" },
   ];
 
   const [files, setFiles] = useState(null);
@@ -193,13 +195,44 @@ export default function SimulationDetail({ params }) {
         "options",
         JSON.stringify(
           values.options.map((option) => ({
+            id: option.id ?? null,
             text: option.text,
             isCorrect: option.isCorrect === "true",
           }))
         )
       );
-      if (files) formData.append("image", files);
-      mutate({ body: formData });
+
+      if (files && files.type.startsWith("image/")) {
+        formData.append("image", files);
+        formData.append("deleteImage", false);
+      } else if (deleteImage) {
+        formData.append("deleteImage", true);
+      }
+
+      // if (files || !deleteImage) {
+      //   formData.append("image", files);
+      //   formData.append("deleteImage", false);
+      // }
+
+      // if (files.type.startsWith("image/")) {
+      //   formData.append("image", files);
+      // }
+
+      // if (!files || deleteImage) {
+      //   formData.append("deleteImage", true);
+      // }
+
+      // condition for update data
+      if (isPopupForUpdate) {
+        // set form data with different request
+        mutateUpdateQuiz({
+          body: formData,
+          dataId: values.id,
+        });
+      } else {
+        // execute for create new question
+        mutate({ body: formData });
+      }
       if (!isPending) setPopupOpen(false);
       formik.resetForm();
     },
@@ -228,8 +261,14 @@ export default function SimulationDetail({ params }) {
           List Pertanyaan
         </h3>
         <button
-          ref={trigger}
-          onClick={() => setPopupOpen(!popupOpen)}
+          // ref={trigger}
+          onClick={() => {
+            setPopupOpen(!popupOpen);
+            setIsPopupForUpdate(false);
+            setFiles(null);
+            formik.resetForm();
+            setDeleteImage(false);
+          }}
           className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
           <svg
@@ -255,6 +294,7 @@ export default function SimulationDetail({ params }) {
           files={files}
           isPending={isPending}
           optionsData={optionsData}
+          setDeleteImage={setDeleteImage}
         />
       </div>
       {isLoadingQuiz || isRefetchingQuiz ? (
@@ -268,8 +308,10 @@ export default function SimulationDetail({ params }) {
             question={item}
             mutateDeleteQuiz={mutateDeleteQuiz}
             setPopupOpen={setPopupOpen}
+            setIsPopupForUpdate={setIsPopupForUpdate}
             popupOpen={popupOpen}
             formik={formik}
+            setFiles={setFiles}
           />
         ))
       )}
@@ -285,6 +327,7 @@ function PopUp({
   setFiles,
   isPending,
   optionsData,
+  setDeleteImage,
 }) {
   return (
     <div
@@ -357,7 +400,7 @@ function PopUp({
                   name={`options.${index}.isCorrect`}
                   options={optionsData}
                   defaultOption={"Jawaban benar atau salah?"}
-                  value={option.isCorrect}
+                  value={option.isCorrect} // Should be a boolean
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -373,12 +416,17 @@ function PopUp({
               Gambar Pertanyaan
             </label>
             <div>
-              {files !== null ? (
+              {files != null ? (
                 <div className="mt-4.5 border border-stroke bg-white px-4 py-3 dark:border-strokedark dark:bg-boxdark">
                   <div className="flex items-center justify-between">
                     <span>{files.name}</span>
 
-                    <button onClick={() => setFiles(null)}>
+                    <button
+                      onClick={() => {
+                        setFiles(null);
+                        setDeleteImage(true);
+                      }}
+                    >
                       <svg
                         className="fill-current"
                         width="10"
@@ -488,7 +536,10 @@ function QuizCard({
   mutateDeleteQuiz,
   setPopupOpen,
   popupOpen,
+  setDeleteImage,
   formik,
+  setIsPopupForUpdate,
+  setFiles,
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
@@ -543,15 +594,15 @@ function QuizCard({
             </h5>
 
             <div className="flex flex-col gap-2">
-              <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+              <ul className="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
                 {question?.quizOptions.map((item, i) => (
                   <li
-                    class="flex items-center text-black dark:text-white"
+                    className="flex items-center text-black dark:text-white"
                     key={i}
                   >
                     {item.isCorrect ? (
                       <svg
-                        class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+                        className="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -561,7 +612,7 @@ function QuizCard({
                       </svg>
                     ) : (
                       <svg
-                        class="w-3.5 h-3.5 me-2 text-gray-500 dark:text-gray-400 flex-shrink-0"
+                        className="w-3.5 h-3.5 me-2 text-gray-500 dark:text-gray-400 flex-shrink-0"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -581,15 +632,24 @@ function QuizCard({
             <DropdownDefault
               actionDelete={() => openModal(question)}
               actionEdit={() => {
-                setPopupOpen(!popupOpen);
+                setPopupOpen(true);
+                // setDeleteImage(false);
+                question.imageUrl
+                  ? setFiles({
+                      name: getLastPathUrl(question.imageUrl),
+                    })
+                  : setFiles(null);
+                formik.setFieldValue("id", question.id);
                 formik.setFieldValue("text", question.text);
                 question?.quizOptions.forEach((option, index) => {
+                  formik.setFieldValue(`options[${index}].id`, option.id);
                   formik.setFieldValue(`options[${index}].text`, option.text);
                   formik.setFieldValue(
                     `options[${index}].isCorrect`,
                     option.isCorrect
                   );
                 });
+                setIsPopupForUpdate(true);
               }}
             />
           </div>
