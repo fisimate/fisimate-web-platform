@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Quizzes | Fisimate",
+  title: "Students | Fisimate",
   description: "Fisimate web app",
 };
 

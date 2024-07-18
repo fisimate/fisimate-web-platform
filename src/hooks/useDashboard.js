@@ -13,3 +13,16 @@ export const useGetDashboard = (token) => {
     },
   });
 };
+
+export const useGetLeaderboard = ({ token }) => {
+  return useQuery({
+    queryKey: ["leaderboards"],
+    queryFn: async () => {
+      return await axiosInstance.get("/dashboard/leaderboard", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+  });
+};

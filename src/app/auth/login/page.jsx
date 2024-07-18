@@ -67,7 +67,7 @@ export default function Login() {
   return (
     <React.Fragment>
       <div className="p-4 md:p-6 2xl:p-10 flex justify-center items-center h-screen">
-        <div className="w-3/4 rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="w-full lg:w-3/4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-wrap items-center">
             <div className="hidden w-full xl:block xl:w-1/2">
               <div className="px-26 py-17.5 text-center">
@@ -89,7 +89,7 @@ export default function Login() {
                 </Link>
 
                 <p className="2xl:px-20 text-body">
-                  Bridging to Interact with the World
+                  Inovasi Belajar Fisika untuk Masa Depan
                 </p>
 
                 <span className="mt-15 inline-block">

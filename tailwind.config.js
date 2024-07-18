@@ -9,6 +9,9 @@ module.exports = {
   ],
   darkMode: "class",
   theme: {
+    listStyleType: {
+      roman: "lower-latin",
+    },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],
     },

@@ -4,16 +4,16 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
-import { useDeleteBank, useGetBanks } from "@/hooks/useBank";
+import { useDeleteStudent, useGetAllStudents } from "@/hooks/useStudent";
 import { useGetToken } from "@/hooks/useToken";
-import getLastPathUrl from "@/utils/getLastPathUrl";
 import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { LuKeyRound } from "react-icons/lu";
 
-export default function MaterialBank() {
+export default function StudentPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -29,14 +29,12 @@ export default function MaterialBank() {
 
   const token = useGetToken();
 
-  const { data, isLoading, isRefetching, refetch } = useGetBanks({
+  const { data, isLoading, isRefetching, refetch } = useGetAllStudents({
     token,
-    model: "material",
   });
 
-  const { mutate } = useDeleteBank({
+  const { mutate } = useDeleteStudent({
     token,
-    model: "material",
     onError: (error) => {
       const result = error.response.data;
 
@@ -59,24 +57,24 @@ export default function MaterialBank() {
     },
   });
 
-  const fields = ["icon", "title", "filePath", "chapter.name"];
+  const fields = ["profilePicture", "fullname", "nis", "email"];
 
   const headers = [
     {
-      Header: "Icon",
-      accessor: "icon",
+      Header: "Avatar",
+      accessor: "avatar",
     },
     {
-      Header: "Title",
-      accessor: "title",
+      Header: "Fullname",
+      accessor: "fullname",
     },
     {
-      Header: "File Materi",
-      accessor: "fileMateri",
+      Header: "NIS",
+      accessor: "nis",
     },
     {
-      Header: "Bab",
-      accessor: "bab",
+      Header: "Email",
+      accessor: "email",
     },
   ];
 
@@ -84,7 +82,11 @@ export default function MaterialBank() {
     <>
       <TableAction
         icon={<FiEdit />}
-        action={() => push(`/banks/materials/${actionData.id}`)}
+        action={() => push(`/students/${actionData.id}`)}
+      />
+      <TableAction
+        icon={<LuKeyRound />}
+        action={() => push(`/students/${actionData.id}/reset`)}
       />
       <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
     </>
@@ -100,7 +102,7 @@ export default function MaterialBank() {
       label: "Delete",
       onClick: () => {
         if (selectedData) {
-          mutate({ token, dataId: selectedData.id });
+          mutate({ token, studentId: selectedData.id });
 
           closeModal();
         }
@@ -109,14 +111,9 @@ export default function MaterialBank() {
     },
   ];
 
-  const formattedData = data?.data?.data.map((item) => ({
-    ...item,
-    filePath: getLastPathUrl(item.filePath),
-  }));
-
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Bank Materi"} />
+      <Breadcrumb pageName={"Siswa"} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -127,13 +124,13 @@ export default function MaterialBank() {
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="flex justify-end mb-6">
-            <Link href={"/banks/materials/create"}>
-              <Button text={"Create Materi"} />
+            <Link href={"/students/create"}>
+              <Button text={"Create Siswa"} />
             </Link>
           </div>
           <Table
             headers={headers}
-            data={formattedData}
+            data={data?.data?.data}
             action={actions}
             fields={fields}
             isLoading={isLoading}

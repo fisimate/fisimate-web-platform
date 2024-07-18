@@ -63,16 +63,20 @@ export default function ExamBank() {
 
   const headers = [
     {
-      title: "Icon",
+      Header: "Icon",
+      accessor: "icon",
     },
     {
-      title: "Title",
+      Header: "Title",
+      accessor: "title",
     },
     {
-      title: "File Soal",
+      Header: "File Soal",
+      accessor: "fileSoal",
     },
     {
-      title: "Bab",
+      Header: "Bab",
+      accessor: "bab",
     },
   ];
 

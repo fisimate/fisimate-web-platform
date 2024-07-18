@@ -1,11 +1,8 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
-import FileInput from "@/components/Input/FileInput";
-import TextArea from "@/components/Input/TextArea";
 import InputGroup from "@/components/InputGroup";
-import { useCreateChapter } from "@/hooks/useChapter";
-import { useFormData } from "@/hooks/useFormData";
+import { useResetPassword } from "@/hooks/useStudent";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -13,45 +10,42 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function CreateChapter() {
+export default function ResetPassword({ params }) {
+  const { studentId } = params;
   const { push } = useRouter();
-  const toast = useToast();
   const token = useGetToken();
+  const toast = useToast();
 
-  const { mutate, isPending } = useCreateChapter({
+  const formik = useFormik({
+    initialValues: {
+      newPassword: "",
+    },
+    onSubmit: (values) => {
+      mutate({ body: values, studentId });
+    },
+  });
+
+  const { mutate, isPending } = useResetPassword({
     token,
     onSuccess: () => {
       toast({
-        title: "Data berhasil dibuat!",
+        title: "Berhasil reset password!",
         status: "success",
         isClosable: true,
         position: "top-right",
       });
 
-      push("/chapters");
+      push("/students");
     },
     onError: (error) => {
       const result = error.response.data;
 
       toast({
-        title: result.message,
+        title: result.messsage,
         status: "error",
         isClosable: true,
         position: "top-right",
       });
-    },
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      icon: null,
-      shortDescription: "",
-    },
-    onSubmit: (values) => {
-      const formData = useFormData(values);
-
-      mutate({ body: formData });
     },
   });
 
@@ -61,52 +55,35 @@ export default function CreateChapter() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Create Bab Baru"} />
+      <Breadcrumb pageName={"Reset Password"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Create Bab Baru
+              Reset Password
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="p-6.5">
               <InputGroup
-                label={"Nama"}
-                type="text"
-                name="name"
+                label={"Password Baru"}
+                type="password"
+                name="newPassword"
+                value={formik.values.newPassword}
                 onChange={handleChange}
-                placeholder="Masukkan judul bab baru"
-              />
-
-              <FileInput
-                label={"Icon"}
-                type="file"
-                name="icon"
-                onChange={(e) =>
-                  formik.setFieldValue(e.target.name, e.target.files[0])
-                }
-                placeholder="Pilih icon"
-              />
-
-              <TextArea
-                label={"Deskripsi Singkat"}
-                type="text"
-                name="shortDescription"
-                onChange={handleChange}
-                placeholder="Masukkan deskripsi singkat"
+                placeholder="Masukkan password baru"
               />
 
               <div className="flex gap-4 justify-end">
-                <Link href={"/chapters"}>
+                <Link href={"/students"}>
                   <Button
                     text={"Cancel"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Create"} type="submit" isLoading={isPending} />
+                <Button text={"Update"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>
