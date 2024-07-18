@@ -26,19 +26,24 @@ export default function Leaderboard() {
 
   const headers = [
     {
-      title: "Avatar",
+      Header: "Avatar",
+      accessor: "avatar",
     },
     {
-      title: "Fullname",
+      Header: "Fullname",
+      accessor: "fullname",
     },
     {
-      title: "NIS",
+      Header: "NIS",
+      accessor: "nis",
     },
     {
-      title: "Email",
+      Header: "Email",
+      accessor: "email",
     },
     {
-      title: "Score",
+      Header: "Score",
+      accessor: "score",
     },
   ];
 

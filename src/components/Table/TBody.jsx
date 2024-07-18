@@ -1,10 +1,18 @@
-"use client";
-import Image from "next/image";
 import React from "react";
 
-export default function TBody({ data, action, fields }) {
+export default function TBody({
+  getTableBodyProps,
+  page,
+  prepareRow,
+  action,
+  fields,
+}) {
   const renderField = (field, value) => {
-    if (field === "icon" || field == "user.profilePicture" || field == "profilePicture") {
+    if (
+      field === "icon" ||
+      field === "user.profilePicture" ||
+      field === "profilePicture"
+    ) {
       return (
         <img
           src={value ?? "/images/user/user-avatar.png"}
@@ -32,35 +40,38 @@ export default function TBody({ data, action, fields }) {
   };
 
   return (
-    <tbody>
-      {data?.map((item, key) => (
-        <tr key={key}>
-          <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-            <div className="flex items-center space-x-3.5">
-              <p className="text-black dark:text-white">{key + 1}</p>
-            </div>
-          </td>
-          {fields.map((field, i) => (
-            <td
-              key={i}
-              className="border-b border-[#eee] px-4 py-5 dark:border-strokedark"
-            >
-              <p className="text-black dark:text-white">
-                {renderField(field, getField(item, field))}
-              </p>
-            </td>
-          ))}
-          {action && (
+    <tbody {...getTableBodyProps()}>
+      {page.map((row, i) => {
+        prepareRow(row);
+        return (
+          <tr {...row.getRowProps()}>
             <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
               <div className="flex items-center space-x-3.5">
-                <p className="text-black dark:text-white flex gap-3">
-                  {action(item)}
-                </p>
+                <p className="text-black dark:text-white">{row.index + 1}</p>
               </div>
             </td>
-          )}
-        </tr>
-      ))}
+            {fields.map((field, i) => (
+              <td
+                key={i}
+                className="border-b border-[#eee] px-4 py-5 dark:border-strokedark"
+              >
+                <p className="text-black dark:text-white">
+                  {renderField(field, getField(row.original, field))}
+                </p>
+              </td>
+            ))}
+            {action && (
+              <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                <div className="flex items-center space-x-3.5">
+                  <p className="text-black dark:text-white flex gap-3">
+                    {action(row.original)}
+                  </p>
+                </div>
+              </td>
+            )}
+          </tr>
+        );
+      })}
     </tbody>
   );
 }

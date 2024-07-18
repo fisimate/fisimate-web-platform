@@ -18,14 +18,17 @@ export default function Simulation() {
 
   const headers = [
     {
-      title: "Icon",
+      Header: "Icon",
+      acccessor: "icon",
     },
     {
-      title: "Title",
+      Header: "Title",
+      acccessor: "title",
     },
 
     {
-      title: "Bab",
+      Header: "Bab",
+      acccessor: "bab",
     },
   ];
 
