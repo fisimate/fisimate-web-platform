@@ -17,8 +17,10 @@ export default function SelectGroup({
   }, [value]);
 
   const handleChange = (e) => {
-    setSelectedOption(e.target.value);
+    const selectedValue = e.target.value == "true" ? true : false;
+    setSelectedOption(selectedValue);
     if (onChange) {
+      e.target.value = selectedValue;
       onChange(e);
     }
   };
@@ -87,7 +89,7 @@ export default function SelectGroup({
         {options?.map((option, i) => (
           <option
             key={i}
-            value={option.id}
+            value={option.value}
             className="text-body dark:text-bodydark"
           >
             {option.name}
