@@ -13,22 +13,54 @@ import {
   useGetQuizzes,
   useUpdateQuiz,
 } from "@/hooks/useQuiz";
+import { useDeleteQuizReview, useGetQuizReview } from "@/hooks/useQuizReview";
 import { useGetToken } from "@/hooks/useToken";
 import getLastPathUrl from "@/utils/getLastPathUrl";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function SimulationDetail({ params }) {
-  const [formattedData, setFormattedData] = useState([]);
+  const [materialData, setMaterialData] = useState([]);
+  const [reviewData, setReviewData] = useState([]);
   const [isPopupForUpdate, setIsPopupForUpdate] = useState(false);
   const [deleteImage, setDeleteImage] = useState(false);
   const { simulationId } = params;
   const token = useGetToken();
   const toast = useToast();
   const { push } = useRouter();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  const openModal = (modalData) => {
+    setSelectedData(modalData);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+
+  const modalActions = [
+    {
+      label: "Cancel",
+      onClick: closeModal,
+      primary: false,
+    },
+    {
+      label: "Delete",
+      onClick: () => {
+        if (selectedData) {
+          mutateDeleteQuizReview();
+
+          closeModal();
+        }
+      },
+      primary: true,
+    },
+  ];
 
   const {
     data: dataMaterials,
@@ -148,10 +180,49 @@ export default function SimulationDetail({ params }) {
       },
     });
 
+  const {
+    data: dataReviews,
+    isLoading: isLoadingReview,
+    isRefetching: isRefetchingReview,
+  } = useGetQuizReview({
+    token,
+    simulationId,
+  });
+
+  const { mutate: mutateDeleteQuizReview } = useDeleteQuizReview({
+    token,
+    simulationId,
+    onSuccess: () => {
+      toast({
+        title: "Berhasil hapus data!",
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+      });
+
+      refetchQuiz();
+    },
+    onError: (error) => {
+      const result = error.response.data;
+
+      toast({
+        title: result.message,
+        status: "error",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+  });
+
   const fields = ["filePath"];
   const headers = [{ Header: "File Materi", accessor: "fileMateri" }];
 
-  const tableActions = (actionData) => (
+  const fieldReviews = ["filePath"];
+  const headerReviews = [
+    { Header: "File Pembahasan", accessor: "filePembahasan" },
+  ];
+
+  const materialTableActions = (actionData) => (
     <TableAction
       icon={<FiEdit />}
       action={() =>
@@ -160,15 +231,37 @@ export default function SimulationDetail({ params }) {
     />
   );
 
+  const reviewTableActions = (actionData) => (
+    <>
+      <TableAction
+        icon={<FiEdit />}
+        action={() =>
+          push(`/simulations/${simulationId}/materials/${actionData.id}`)
+        }
+      />
+      <TableAction icon={<FiTrash2 />} action={() => openModal(actionData)} />
+    </>
+  );
+
   useEffect(() => {
-    if (dataMaterials) {
-      setFormattedData([
+    if (dataMaterials?.data?.data) {
+      setMaterialData([
         {
           ...dataMaterials?.data?.data,
         },
       ]);
     }
-  }, [dataMaterials]);
+  }, [dataMaterials?.data?.data]);
+
+  useEffect(() => {
+    if (dataReviews?.data?.data) {
+      setReviewData([
+        {
+          ...dataReviews?.data?.data,
+        },
+      ]);
+    }
+  }, [dataReviews?.data?.data]);
 
   const optionsData = [
     { value: true, name: "Benar" },
@@ -239,24 +332,55 @@ export default function SimulationDetail({ params }) {
 
   return (
     <React.Fragment>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={"Delete data"}
+        content={"Are you sure want to delete this data?"}
+        actions={modalActions}
+      />
       <Breadcrumb pageName={"Detail Simulasi"} />
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
+        <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
           Materi
         </h3>
       </div>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
         <Table
           headers={headers}
-          data={formattedData}
+          data={materialData}
           fields={fields}
-          action={tableActions}
+          action={materialTableActions}
           isLoading={isLoadingMaterials}
+          withSearch={false}
+          withFooter={false}
           isRefetching={isRefetchingMaterials}
         />
       </div>
       <div className="mt-5 flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="pl-2 text-title-lg font-semibold text-black dark:text-white">
+        <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
+          Pembahasan
+        </h3>
+        <Link href={`/simulations/${simulationId}/reviews/create`}>
+          <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+            Create
+          </button>
+        </Link>
+      </div>
+      <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <Table
+          headers={headerReviews}
+          data={reviewData}
+          fields={fieldReviews}
+          action={reviewTableActions}
+          withSearch={false}
+          withFooter={false}
+          isLoading={isLoadingReview}
+          isRefetching={isRefetchingReview}
+        />
+      </div>
+      <div className="mt-5 flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
+        <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
           List Pertanyaan
         </h3>
         <button
@@ -268,22 +392,9 @@ export default function SimulationDetail({ params }) {
             formik.resetForm();
             setDeleteImage(false);
           }}
-          className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
+          className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
-          <svg
-            className="fill-current"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M15 7H9V1C9 0.4 8.6 0 8 0C7.4 0 7 0.4 7 1V7H1C0.4 7 0 7.4 0 8C0 8.6 0.4 9 1 9H7V15C7 15.6 7.4 16 8 16C8.6 16 9 15.6 9 15V9H15C15.6 9 16 8.6 16 8C16 7.4 15.6 7 15 7Z"
-              fill=""
-            />
-          </svg>
-          Tambah
+          Create
         </button>
         <PopUp
           popupOpen={popupOpen}
@@ -492,38 +603,72 @@ function PopUp({
               )}
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={isPending}
-            className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90"
-          >
-            {isPending ? (
-              <>
-                <span className="animate-spin">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask id="path-1-inside-1_1881_16183" fill="white">
-                      <path d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z" />
-                    </mask>
-                    <path
-                      d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z"
-                      stroke="white"
-                      strokeWidth="14"
-                      mask="url(#path-1-inside-1_1881_16183)"
-                    />
-                  </svg>
-                </span>
-                Loading...
-              </>
-            ) : (
-              "Create"
-            )}
-          </button>
+          <div className="flex flex-row gap-2">
+            <button
+              type="submit"
+              disabled={isPending}
+              className="flex w-full items-center border justify-center gap-2 rounded border-primary px-4.5 py-2.5 font-medium text-primary bg-transparent hover:bg-opacity-90"
+            >
+              {isPending ? (
+                <>
+                  <span className="animate-spin">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <mask id="path-1-inside-1_1881_16183" fill="white">
+                        <path d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z" />
+                      </mask>
+                      <path
+                        d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z"
+                        stroke="white"
+                        strokeWidth="14"
+                        mask="url(#path-1-inside-1_1881_16183)"
+                      />
+                    </svg>
+                  </span>
+                  Loading...
+                </>
+              ) : (
+                "Generate"
+              )}
+            </button>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90"
+            >
+              {isPending ? (
+                <>
+                  <span className="animate-spin">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <mask id="path-1-inside-1_1881_16183" fill="white">
+                        <path d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z" />
+                      </mask>
+                      <path
+                        d="M15.328 23.5293C17.8047 22.8144 19.9853 21.321 21.547 19.2701C23.1087 17.2193 23.9686 14.72 23.9992 12.1424C24.0297 9.56481 23.2295 7.04587 21.7169 4.95853C20.2043 2.8712 18.0597 1.32643 15.6007 0.552947C13.1417 -0.220538 10.499 -0.181621 8.0638 0.663935C5.62864 1.50949 3.53049 3.11674 2.07999 5.24771C0.629495 7.37868 -0.096238 9.92009 0.0102418 12.4957C0.116722 15.0713 1.04975 17.5441 2.6712 19.5481L4.96712 17.6904C3.74474 16.1796 3.04133 14.3154 2.96106 12.3737C2.88079 10.432 3.42791 8.51604 4.52142 6.90953C5.61493 5.30301 7.19671 4.09133 9.03255 3.45387C10.8684 2.81642 12.8607 2.78708 14.7145 3.3702C16.5683 3.95332 18.1851 5.1179 19.3254 6.69152C20.4658 8.26514 21.0691 10.1641 21.046 12.1074C21.023 14.0506 20.3748 15.9347 19.1974 17.4809C18.02 19.027 16.3761 20.1528 14.5089 20.6918L15.328 23.5293Z"
+                        stroke="white"
+                        strokeWidth="14"
+                        mask="url(#path-1-inside-1_1881_16183)"
+                      />
+                    </svg>
+                  </span>
+                  Loading...
+                </>
+              ) : (
+                "Create"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
