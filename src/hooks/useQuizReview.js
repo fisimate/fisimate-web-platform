@@ -59,16 +59,12 @@ export const useDeleteQuizReview = ({
   onError,
 }) => {
   return useMutation({
-    mutationFn: async ({ body }) => {
-      return await axiosInstance.delete(
-        `/quizzes/${simulationId}/review`,
-        body,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    mutationFn: async () => {
+      return await axiosInstance.delete(`/quizzes/${simulationId}/review`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     },
     onError,
     onSuccess,
