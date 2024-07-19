@@ -126,17 +126,19 @@ export default function ExamBank() {
       />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-          <div className="flex justify-end mb-6">
-            <Link href={"/banks/exams/create"}>
-              <Button text={"Create Soal"} />
-            </Link>
-          </div>
           <Table
             headers={headers}
             data={formattedData}
             action={actions}
             fields={fields}
             isLoading={isLoading}
+            button={
+              <div className="flex justify-end mb-6">
+                <Link href={"/banks/exams/create"}>
+                  <Button text={"Create Soal"} />
+                </Link>
+              </div>
+            }
             isRefetching={isRefetching}
           />
         </div>

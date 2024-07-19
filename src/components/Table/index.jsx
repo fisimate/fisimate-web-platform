@@ -17,6 +17,7 @@ export default function Table({
   fields,
   isLoading,
   isRefetching,
+  button,
 }) {
   const data = useMemo(() => tableData || [], [tableData]);
   const columns = useMemo(() => headers || [], [headers]);
@@ -54,6 +55,19 @@ export default function Table({
 
   return (
     <div className="max-w-full overflow-x-auto">
+      <div className="flex justify-between border-b border-stroke pb-4 dark:border-strokedark">
+        <div className="w-100">
+          <input
+            type="text"
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            className="w-full rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
+            placeholder="Search..."
+          />
+        </div>
+
+        {button}
+      </div>
       <table className="w-full table-auto" {...getTableProps()}>
         <Thead headerGroups={headerGroups} action={action} />
         {isLoading || isRefetching ? (
