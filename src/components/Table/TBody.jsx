@@ -11,6 +11,8 @@ export default function TBody({
   fields,
 }) {
   const renderField = (field, value) => {
+    if (!value) return null;
+
     if (
       field === "icon" ||
       field === "user.profilePicture" ||
@@ -28,12 +30,12 @@ export default function TBody({
     if (field === "filePath") {
       return (
         <Link
-          href={value}
+          href={value ?? ""}
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-row items-center gap-2 hover:text-primary"
         >
-          {getLastPathUrl(value)} <FiExternalLink />
+          {value && getLastPathUrl(value)} <FiExternalLink />
         </Link>
       );
     }
@@ -46,10 +48,13 @@ export default function TBody({
   };
 
   const getField = (item, field) => {
+    if (!item) return null;
+
     if (field.includes(".")) {
       const keys = field.split(".");
       let value = item;
       for (let key of keys) {
+        if (!value) return null;
         value = value[key];
       }
       return value;
@@ -61,8 +66,9 @@ export default function TBody({
     <tbody {...getTableBodyProps()}>
       {page.map((row, i) => {
         prepareRow(row);
+        const rowProps = row.getRowProps();
         return (
-          <tr {...row.getRowProps()}>
+          <tr key={rowProps.key} {...rowProps}>
             <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
               <div className="flex items-center space-x-3.5">
                 <p className="text-black dark:text-white">{row.index + 1}</p>
