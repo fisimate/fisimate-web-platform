@@ -1,4 +1,7 @@
+import getLastPathUrl from "@/utils/getLastPathUrl";
+import Link from "next/link";
 import React from "react";
+import { FiExternalLink } from "react-icons/fi";
 
 export default function TBody({
   getTableBodyProps,
@@ -21,9 +24,24 @@ export default function TBody({
         />
       );
     }
+
+    if (field === "filePath") {
+      return (
+        <Link
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-row items-center gap-2 hover:text-primary"
+        >
+          {getLastPathUrl(value)} <FiExternalLink />
+        </Link>
+      );
+    }
+
     if (typeof value === "object" && value !== null) {
       return JSON.stringify(value);
     }
+
     return value;
   };
 

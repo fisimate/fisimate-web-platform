@@ -165,7 +165,6 @@ export default function SimulationDetail({ params }) {
       setFormattedData([
         {
           ...dataMaterials?.data?.data,
-          filePath: getLastPathUrl(dataMaterials?.data?.data?.filePath),
         },
       ]);
     }

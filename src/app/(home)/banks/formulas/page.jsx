@@ -6,7 +6,6 @@ import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useDeleteBank, useGetBanks } from "@/hooks/useBank";
 import { useGetToken } from "@/hooks/useToken";
-import getLastPathUrl from "@/utils/getLastPathUrl";
 import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -109,11 +108,6 @@ export default function FormulaBank() {
     },
   ];
 
-  const formattedData = data?.data?.data.map((item) => ({
-    ...item,
-    filePath: getLastPathUrl(item.filePath),
-  }));
-
   return (
     <React.Fragment>
       <Breadcrumb pageName={"Bank Rumus"} />
@@ -128,7 +122,7 @@ export default function FormulaBank() {
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <Table
             headers={headers}
-            data={formattedData}
+            data={data?.data?.data}
             action={actions}
             fields={fields}
             isLoading={isLoading}
