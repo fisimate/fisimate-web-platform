@@ -3,6 +3,7 @@ import "./globals.css";
 import InitProvider from "@/utils/QueryProvider";
 import "flatpickr/dist/flatpickr.min.css";
 import InitChakraProvider from "@/utils/ChakraClientProvider";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata = {
   title: "Fisimate",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <InitProvider>
           <InitChakraProvider>
             <div className="dark:bg-boxdark-2 dark:text-bodydark">
+              <NextTopLoader showSpinner={false} color="#072DF4" />
               {children}
             </div>
           </InitChakraProvider>
