@@ -387,11 +387,14 @@ export default function SimulationDetail({ params }) {
         <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
           Materi
         </h3>
-        <Link href={`/simulations/${simulationId}/materials/create`}>
-          <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-            Create
-          </button>
-        </Link>
+        {isLoadingMaterials || isRefetchingMaterials ? null : !dataMaterials
+            ?.data?.data ? (
+          <Link href={`/simulations/${simulationId}/materials/create`}>
+            <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+              Create
+            </button>
+          </Link>
+        ) : null}
       </div>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
         <Table
@@ -409,11 +412,14 @@ export default function SimulationDetail({ params }) {
         <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
           Pembahasan
         </h3>
-        <Link href={`/simulations/${simulationId}/reviews/create`}>
-          <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-            Create
-          </button>
-        </Link>
+        {isLoadingMaterials || isRefetchingMaterials ? null : !dataReviews?.data
+            ?.data ? (
+          <Link href={`/simulations/${simulationId}/reviews/create`}>
+            <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+              Create
+            </button>
+          </Link>
+        ) : null}
       </div>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
         <Table
