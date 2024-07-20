@@ -94,6 +94,7 @@ export const useGenerateQuestion = ({ simulationId, token }) => {
       });
     },
     gcTime: 0,
+    enabled: false,
   });
 };
 
