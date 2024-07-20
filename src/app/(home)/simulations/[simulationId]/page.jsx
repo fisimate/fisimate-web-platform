@@ -1,5 +1,6 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
+import ErrorPage from "@/components/ErrorPage";
 import Modal from "@/components/Modal";
 import PopUp from "@/components/Quiz/Popup";
 import QuizCard from "@/components/Quiz/QuizCard";
@@ -15,6 +16,7 @@ import {
   useUpdateQuiz,
 } from "@/hooks/useQuiz";
 import { useDeleteQuizReview, useGetQuizReview } from "@/hooks/useQuizReview";
+import { useGetOneSimulation, useGetSimulations } from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -87,6 +89,11 @@ export default function SimulationDetail({ params }) {
       primary: true,
     },
   ];
+
+  const { isLoadingError } = useGetOneSimulation({
+    token,
+    simulationId,
+  });
 
   const {
     data: dataMaterials,
@@ -365,6 +372,10 @@ export default function SimulationDetail({ params }) {
       formik.resetForm();
     },
   });
+
+  if (isLoadingError) {
+    return <ErrorPage />;
+  }
 
   return (
     <React.Fragment>
