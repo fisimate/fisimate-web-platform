@@ -66,9 +66,9 @@ export default function TBody({
     <tbody {...getTableBodyProps()}>
       {page.map((row, i) => {
         prepareRow(row);
-        const rowProps = row.getRowProps();
+        const { key, ...rowProps } = row.getRowProps();
         return (
-          <tr key={rowProps.key} {...rowProps}>
+          <tr key={key} {...rowProps}>
             <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
               <div className="flex items-center space-x-3.5">
                 <p className="text-black dark:text-white">{row.index + 1}</p>
