@@ -1,9 +1,10 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
+import ErrorPage from "@/components/ErrorPage";
 import FileInput from "@/components/Input/FileInput";
 import { useFormData } from "@/hooks/useFormData";
-import { useUpdateMaterial } from "@/hooks/useMaterial";
+import { useGetMaterials, useUpdateMaterial } from "@/hooks/useMaterial";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -28,6 +29,15 @@ export default function EditMaterial({ params }) {
       mutate({ body: formData, dataId: materialId });
     },
   });
+
+  const { isLoadingError } = useGetMaterials({
+    token,
+    simulationId,
+  });
+
+  if (isLoadingError) {
+    return <ErrorPage />;
+  }
 
   const { mutate, isPending } = useUpdateMaterial({
     simulationId,

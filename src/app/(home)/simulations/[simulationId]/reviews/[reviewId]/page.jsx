@@ -1,9 +1,10 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
+import ErrorPage from "@/components/ErrorPage";
 import FileInput from "@/components/Input/FileInput";
 import { useFormData } from "@/hooks/useFormData";
-import { useUpdateQuizReview } from "@/hooks/useQuizReview";
+import { useGetQuizReview, useUpdateQuizReview } from "@/hooks/useQuizReview";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -28,6 +29,15 @@ export default function EditQuizReview({ params }) {
       mutate({ body: formData, dataId: reviewId });
     },
   });
+
+  const { isLoadingError } = useGetQuizReview({
+    simulationId,
+    token,
+  });
+
+  if (isLoadingError) {
+    return <ErrorPage />;
+  }
 
   const { mutate, isPending } = useUpdateQuizReview({
     simulationId,
