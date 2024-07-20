@@ -21,7 +21,10 @@ export default function Table({
   withSearch = true,
   withFooter = true,
 }) {
-  const data = useMemo(() => tableData || [], [tableData]);
+  const data = useMemo(
+    () => (Array.isArray(tableData) ? tableData : []),
+    [tableData]
+  );
   const columns = useMemo(() => headers || [], [headers]);
 
   const tableInstance = useTable(
