@@ -6,10 +6,11 @@ import QuizCard from "@/components/Quiz/QuizCard";
 import Spinner from "@/components/Spinner";
 import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
-import { useGetMaterials } from "@/hooks/useMaterial";
+import { useDeleteMaterial, useGetMaterials } from "@/hooks/useMaterial";
 import {
   useCreateQuiz,
   useDeleteQuiz,
+  useGenerateQuestion,
   useGetQuizzes,
   useUpdateQuiz,
 } from "@/hooks/useQuiz";
@@ -33,12 +34,21 @@ export default function SimulationDetail({ params }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
+  const [isModalTwoOpen, setModalTwoOpen] = useState(false);
+  const [selectedDataTwo, setSelectedDataTwo] = useState(null);
+
   const openModal = (modalData) => {
     setSelectedData(modalData);
     setModalOpen(true);
   };
 
+  const openModalTwo = (modalData) => {
+    setSelectedDataTwo(modalData);
+    setModalTwoOpen(true);
+  };
+
   const closeModal = () => setModalOpen(false);
+  const closeModalTwo = () => setModalTwoOpen(false);
 
   const modalActions = [
     {
@@ -59,9 +69,29 @@ export default function SimulationDetail({ params }) {
     },
   ];
 
+  const modalTwoActions = [
+    {
+      label: "Cancel",
+      onClick: closeModalTwo,
+      primary: false,
+    },
+    {
+      label: "Delete",
+      onClick: () => {
+        if (selectedDataTwo) {
+          mutateDeleteMaterial({ dataId: selectedDataTwo.id });
+
+          closeModalTwo();
+        }
+      },
+      primary: true,
+    },
+  ];
+
   const {
     data: dataMaterials,
     isLoading: isLoadingMaterials,
+    refetch: refetchMaterials,
     isRefetching: isRefetchingMaterials,
   } = useGetMaterials({ simulationId, token });
 
@@ -152,6 +182,30 @@ export default function SimulationDetail({ params }) {
     },
   });
 
+  const { mutate: mutateDeleteMaterial } = useDeleteMaterial({
+    token,
+    simulationId,
+    onError: (error) => {
+      const result = error.response.data;
+      toast({
+        title: result.message,
+        status: "error",
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Berhasil hapus data!",
+        status: "success",
+        isClosable: true,
+        position: "top-right",
+      });
+
+      refetchMaterials();
+    },
+  });
+
   const { mutate: mutateUpdateQuiz, isPending: isPendingUpdateQuiz } =
     useUpdateQuiz({
       token,
@@ -188,6 +242,12 @@ export default function SimulationDetail({ params }) {
     simulationId,
   });
 
+  const { isRefetching: isRefetchingGenerate, refetch: refetchGenerate } =
+    useGenerateQuestion({
+      token,
+      simulationId,
+    });
+
   const { mutate: mutateDeleteQuizReview } = useDeleteQuizReview({
     token,
     simulationId,
@@ -222,12 +282,18 @@ export default function SimulationDetail({ params }) {
   ];
 
   const materialTableActions = (actionData) => (
-    <TableAction
-      icon={<FiEdit />}
-      action={() =>
-        push(`/simulations/${simulationId}/materials/${actionData.id}`)
-      }
-    />
+    <>
+      <TableAction
+        icon={<FiEdit />}
+        action={() =>
+          push(`/simulations/${simulationId}/materials/${actionData.id}`)
+        }
+      />
+      <TableAction
+        icon={<FiTrash2 />}
+        action={() => openModalTwo(actionData)}
+      />
+    </>
   );
 
   const reviewTableActions = (actionData) => (
@@ -268,7 +334,7 @@ export default function SimulationDetail({ params }) {
           values.options.map((option) => ({
             id: option.id ?? null,
             text: option.text,
-            isCorrect: option.isCorrect === "true",
+            isCorrect: option.isCorrect,
           }))
         )
       );
@@ -318,11 +384,23 @@ export default function SimulationDetail({ params }) {
         content={"Are you sure want to delete this data?"}
         actions={modalActions}
       />
+      <Modal
+        isOpen={isModalTwoOpen}
+        onClose={closeModalTwo}
+        title={"Delete data"}
+        content={"Are you sure want to delete this data?"}
+        actions={modalTwoActions}
+      />
       <Breadcrumb pageName={"Detail Simulasi"} />
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
         <h3 className="pl-2 text-lg font-semibold text-black dark:text-white">
           Materi
         </h3>
+        <Link href={`/simulations/${simulationId}/materials/create`}>
+          <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
+            Create
+          </button>
+        </Link>
       </div>
       <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark">
         <Table
@@ -384,6 +462,8 @@ export default function SimulationDetail({ params }) {
           isPending={isPending}
           optionsData={optionsData}
           setDeleteImage={setDeleteImage}
+          refetchGenerate={refetchGenerate}
+          isRefetchingGenerate={isRefetchingGenerate}
         />
       </div>
       {isLoadingQuiz || isRefetchingQuiz ? (
