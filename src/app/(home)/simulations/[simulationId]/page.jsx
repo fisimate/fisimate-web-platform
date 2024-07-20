@@ -339,25 +339,16 @@ export default function SimulationDetail({ params }) {
         )
       );
 
-      if (files && files.type.startsWith("image/")) {
-        formData.append("image", files);
-        formData.append("deleteImage", false);
+      if (files) {
+        if (files.type.startsWith("image/")) {
+          formData.append("image", files);
+          formData.append("deleteImage", false);
+        }
       } else if (deleteImage) {
         formData.append("deleteImage", true);
+      } else {
+        formData.append("deleteImage", false);
       }
-
-      // if (files || !deleteImage) {
-      //   formData.append("image", files);
-      //   formData.append("deleteImage", false);
-      // }
-
-      // if (files.type.startsWith("image/")) {
-      //   formData.append("image", files);
-      // }
-
-      // if (!files || deleteImage) {
-      //   formData.append("deleteImage", true);
-      // }
 
       // condition for update data
       if (isPopupForUpdate) {
