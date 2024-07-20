@@ -17,10 +17,8 @@ export default function SelectGroup({
   }, [value]);
 
   const handleChange = (e) => {
-    const selectedValue = e.target.value == "true" ? true : false;
-    setSelectedOption(selectedValue);
+    setSelectedOption(e.target.value);
     if (onChange) {
-      e.target.value = selectedValue;
       onChange(e);
     }
   };
