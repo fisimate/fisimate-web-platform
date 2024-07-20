@@ -84,7 +84,7 @@ export default function EditQuizReview({ params }) {
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Update"} type="submit" isLoading={isPending} />
+                <Button text={"Create"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>
