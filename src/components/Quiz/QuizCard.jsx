@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
 import DropdownDefault from "../Dropdown/DropdownDefault";
+import getLastPathUrl from "@/utils/getLastPathUrl";
 
 export default function QuizCard({
   question,
