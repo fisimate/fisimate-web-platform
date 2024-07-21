@@ -52,7 +52,7 @@ export default function Profile() {
 
   const pictureForm = useFormik({
     initialValues: {
-      profilePicture: "",
+      profilePicture: null,
     },
     onSubmit: () => {
       const formData = new FormData();
@@ -301,18 +301,6 @@ export default function Profile() {
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
                       </span>
-                      <span className="flex gap-2.5">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFile(null);
-                            setImgSrc(null);
-                          }}
-                          className="text-sm hover:text-primary"
-                        >
-                          Delete
-                        </button>
-                      </span>
                     </div>
                   </div>
 
@@ -368,7 +356,11 @@ export default function Profile() {
 
                   <div className="flex justify-end gap-4.5">
                     <Button
-                      onClick={refetch}
+                      onClick={() => {
+                        refetch();
+                        setFile(data?.data?.data?.profilePicture);
+                        setImgSrc(data?.data?.data?.profilePicture);
+                      }}
                       type="button"
                       size="md"
                       text={"Cancel"}
