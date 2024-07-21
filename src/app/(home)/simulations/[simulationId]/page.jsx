@@ -350,12 +350,14 @@ export default function SimulationDetail({ params }) {
         )
       );
 
-      if (files) {
-        if (files.type.startsWith("image/")) {
+      if (files != null) {
+        if (!files.type) {
+          formData.append("deleteImage", false);
+        } else if (files.type.startsWith("image/")) {
           formData.append("image", files);
           formData.append("deleteImage", false);
         }
-      } else if (deleteImage) {
+      } else if (deleteImage || files == null) {
         formData.append("deleteImage", true);
       } else {
         formData.append("deleteImage", false);
