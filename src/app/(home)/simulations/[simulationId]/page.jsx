@@ -16,7 +16,7 @@ import {
   useUpdateQuiz,
 } from "@/hooks/useQuiz";
 import { useDeleteQuizReview, useGetQuizReview } from "@/hooks/useQuizReview";
-import { useGetOneSimulation, useGetSimulations } from "@/hooks/useSimulation";
+import { useGetOneSimulation } from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -249,11 +249,14 @@ export default function SimulationDetail({ params }) {
     simulationId,
   });
 
-  const { isRefetching: isRefetchingGenerate, refetch: refetchGenerate } =
-    useGenerateQuestion({
-      token,
-      simulationId,
-    });
+  const {
+    isRefetching: isRefetchingGenerate,
+    refetch: refetchGenerate,
+    isPending: isPendingGenerate,
+  } = useGenerateQuestion({
+    token,
+    simulationId,
+  });
 
   const { mutate: mutateDeleteQuizReview } = useDeleteQuizReview({
     token,
@@ -472,6 +475,7 @@ export default function SimulationDetail({ params }) {
           setDeleteImage={setDeleteImage}
           refetchGenerate={refetchGenerate}
           isRefetchingGenerate={isRefetchingGenerate}
+          isPendingGenerate={isPendingGenerate}
         />
       </div>
       {isLoadingQuiz || isRefetchingQuiz ? (

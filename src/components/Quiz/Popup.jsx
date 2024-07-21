@@ -12,19 +12,28 @@ export default function PopUp({
   setDeleteImage,
   refetchGenerate,
   isRefetchingGenerate,
+  isPendingGenerate,
 }) {
   const handleGenerate = async () => {
     const quizData = await refetchGenerate();
-    if (quizData?.data?.data?.data?.quizOptions) {
-      const newOptions = quizData.data.data.data.quizOptions.map((res) => ({
-        text: res.text,
-        isCorrect: res.isCorrect,
-      }));
 
-      formik.setValues({
-        text: quizData.data.data.data.text,
-        options: newOptions,
-      });
+    if (quizData?.data?.data?.data?.quizOptions) {
+      const newOptions = quizData.data.data.data.quizOptions.map(
+        (res, index) => {
+          const existingOption = formik.values.options[index];
+          return {
+            id: existingOption?.id || null, // Keep the existing id or leave undefined if not present
+            text: res.text,
+            isCorrect: res.isCorrect,
+          };
+        }
+      );
+
+      formik.setValues((prevValues) => ({
+        ...prevValues, // Keep all previous values
+        text: quizData.data.data.data.text, // Update the text
+        options: newOptions, // Update the options
+      }));
     }
   };
 
@@ -59,7 +68,7 @@ export default function PopUp({
             />
           </svg>
         </button>
-        {isRefetchingGenerate ? (
+        {isRefetchingGenerate || isPendingGenerate ? (
           <div className="w-full flex justify-center items-center">
             <Spinner />
           </div>
@@ -302,7 +311,7 @@ export default function PopUp({
                   Loading...
                 </>
               ) : (
-                "Create"
+                "Save"
               )}
             </button>
           </form>
