@@ -12,7 +12,7 @@ export default function PopUp({
   setDeleteImage,
   refetchGenerate,
   isRefetchingGenerate,
-  isPendingGenerate,
+  isFetchingGenerate,
 }) {
   const handleGenerate = async () => {
     const quizData = await refetchGenerate();
@@ -68,7 +68,7 @@ export default function PopUp({
             />
           </svg>
         </button>
-        {isRefetchingGenerate || isPendingGenerate ? (
+        {isRefetchingGenerate || isFetchingGenerate ? (
           <div className="w-full flex justify-center items-center">
             <Spinner />
           </div>

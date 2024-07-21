@@ -253,6 +253,7 @@ export default function SimulationDetail({ params }) {
     isRefetching: isRefetchingGenerate,
     refetch: refetchGenerate,
     isPending: isPendingGenerate,
+    isFetching: isFetchingGenerate,
   } = useGenerateQuestion({
     token,
     simulationId,
@@ -475,7 +476,7 @@ export default function SimulationDetail({ params }) {
           setDeleteImage={setDeleteImage}
           refetchGenerate={refetchGenerate}
           isRefetchingGenerate={isRefetchingGenerate}
-          isPendingGenerate={isPendingGenerate}
+          isFetchingGenerate={isFetchingGenerate}
         />
       </div>
       {isLoadingQuiz || isRefetchingQuiz ? (
