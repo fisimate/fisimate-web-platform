@@ -10,7 +10,7 @@ export default function Leaderboard({ data }) {
       <div>
         {data?.map((item, key) => (
           <Link
-            href={`/articles/${item.id}`}
+            href={`/students`}
             className="flex items-center gap-5 px-7.5 py-3 hover:bg-gray-3 dark:hover:bg-meta-4"
             key={key}
           >

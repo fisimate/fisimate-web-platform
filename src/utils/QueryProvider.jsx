@@ -10,6 +10,7 @@ const InitProvider = ({ children }) => {
           queries: {
             retry: false,
             refetchOnWindowFocus: false,
+            gcTime: 0,
           },
         },
       })

@@ -1,10 +1,9 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
-import ErrorPage from "@/components/ErrorPage";
 import FileInput from "@/components/Input/FileInput";
 import { useFormData } from "@/hooks/useFormData";
-import { useGetMaterials, useUpdateMaterial } from "@/hooks/useMaterial";
+import { useCreateMaterial } from "@/hooks/useMaterial";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -12,8 +11,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function EditMaterial({ params }) {
-  const { simulationId, materialId } = params;
+export default function EditQuizReview({ params }) {
+  const { simulationId, reviewId } = params;
   const { push } = useRouter();
   const toast = useToast();
 
@@ -26,20 +25,11 @@ export default function EditMaterial({ params }) {
     onSubmit: (values) => {
       const formData = useFormData(values);
 
-      mutate({ body: formData, dataId: materialId });
+      mutate({ body: formData, dataId: reviewId });
     },
   });
 
-  const { isLoadingError } = useGetMaterials({
-    token,
-    simulationId,
-  });
-
-  if (isLoadingError) {
-    return <ErrorPage />;
-  }
-
-  const { mutate, isPending } = useUpdateMaterial({
+  const { mutate, isPending } = useCreateMaterial({
     simulationId,
     token,
     onSuccess: () => {
@@ -66,13 +56,12 @@ export default function EditMaterial({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Materi Simulasi"} />
-
+      <Breadcrumb pageName={"Create Materi Simulasi"} />
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Materi Simulasi
+              Create Materi Simulasi
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
@@ -95,7 +84,7 @@ export default function EditMaterial({ params }) {
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Update"} type="submit" isLoading={isPending} />
+                <Button text={"Create"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>

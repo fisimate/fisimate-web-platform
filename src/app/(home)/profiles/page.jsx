@@ -9,21 +9,26 @@ import {
 } from "@/hooks/useProfile";
 import { useGetToken } from "@/hooks/useToken";
 import { useToast } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const token = useGetToken();
+  const [file, setFile] = useState(null);
+  const [imgSrc, setImgSrc] = useState(null);
 
   const { push } = useRouter();
 
   const toast = useToast();
 
-  const { data, isLoading, isError, refetch, isRefetching } =
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isLoadingError, refetch, isRefetching } =
     useGetProfile(token);
 
-  if (isError) {
+  if (isLoadingError) {
     toast({
       title: "Invalid user!",
       status: "error",
@@ -47,7 +52,7 @@ export default function Profile() {
 
   const pictureForm = useFormik({
     initialValues: {
-      profilePicture: "",
+      profilePicture: null,
     },
     onSubmit: () => {
       const formData = new FormData();
@@ -65,9 +70,7 @@ export default function Profile() {
         email: data?.data?.data?.email,
       });
 
-      pictureForm.setValues({
-        profilePicture: data?.data?.data?.profilePicture,
-      });
+      setFile(data?.data?.data?.profilePicture);
     }
   }, [data]);
 
@@ -79,6 +82,8 @@ export default function Profile() {
         isClosable: true,
         position: "top-right",
       });
+
+      queryClient.invalidateQueries({ queryKey: ["user-info"] });
     },
     onError: (error) => {
       const result = error.response.data;
@@ -101,6 +106,8 @@ export default function Profile() {
         isClosable: true,
         position: "top-right",
       });
+
+      queryClient.invalidateQueries({ queryKey: ["user-info"] });
     },
     onError: (error) => {
       const result = error.response.data;
@@ -117,6 +124,20 @@ export default function Profile() {
 
   const handleChange = (e) => {
     profileForm.setFieldValue(e.target.name, e.target.value);
+  };
+
+  const renderImage = (event) => {
+    const imgFile = event.target.files[0];
+
+    if (imgFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImgSrc(reader.result);
+      };
+      reader.readAsDataURL(imgFile);
+      setFile(imgFile);
+      pictureForm.setFieldValue("profilePicture", imgFile);
+    }
   };
 
   return (
@@ -265,10 +286,7 @@ export default function Profile() {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full overflow-hidden">
                       <img
-                        src={
-                          pictureForm.values.profilePicture ??
-                          "/images/user/user-avatar.png"
-                        }
+                        src={imgSrc ?? file ?? "/images/user/user-avatar.png"}
                         width={55}
                         height={55}
                         alt="User"
@@ -283,14 +301,6 @@ export default function Profile() {
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
                       </span>
-                      <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
-                          Delete
-                        </button>
-                        <button className="text-sm hover:text-primary">
-                          Update
-                        </button>
-                      </span>
                     </div>
                   </div>
 
@@ -303,10 +313,7 @@ export default function Profile() {
                       accept="image/*"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                       onChange={(e) => {
-                        pictureForm.setFieldValue(
-                          "profilePicture",
-                          e.target.files[0]
-                        );
+                        renderImage(e);
                       }}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
@@ -349,7 +356,11 @@ export default function Profile() {
 
                   <div className="flex justify-end gap-4.5">
                     <Button
-                      onClick={refetch}
+                      onClick={() => {
+                        refetch();
+                        setFile(data?.data?.data?.profilePicture);
+                        setImgSrc(data?.data?.data?.profilePicture);
+                      }}
                       type="button"
                       size="md"
                       text={"Cancel"}

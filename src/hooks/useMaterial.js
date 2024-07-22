@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetMaterials = ({ simulationId, token }) => {
   return useQuery({
-    queryKey: ["materials"],
+    queryKey: [`materials-${simulationId}`],
     queryFn: async () => {
       return await axiosInstance.get(`/simulations/${simulationId}/materials`, {
         headers: {

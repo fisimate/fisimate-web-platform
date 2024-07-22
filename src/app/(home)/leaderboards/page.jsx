@@ -56,6 +56,13 @@ export default function Leaderboard() {
     </>
   );
 
+  const formattedData = data?.data?.data.map((item) => ({
+    ...item,
+    _sum: {
+      score: item._sum.score.toString(),
+    },
+  }));
+
   return (
     <React.Fragment>
       <Breadcrumb pageName={"Leaderboard"} />
@@ -63,7 +70,7 @@ export default function Leaderboard() {
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <Table
             headers={headers}
-            data={data?.data?.data}
+            data={formattedData}
             action={actions}
             fields={fields}
             isLoading={isLoading}

@@ -25,13 +25,16 @@ export default function StudentHistories({ params }) {
 
   const headers = [
     {
-      title: "Simulasi",
+      Header: "Simulasi",
+      accessor: "simulasi",
     },
     {
-      title: "Score",
+      Header: "Score",
+      accessor: "score",
     },
     {
-      title: "Dikerjakan pada",
+      Header: "Dikerjakan pada",
+      accessor: "dikerjakanPada",
     },
   ];
 

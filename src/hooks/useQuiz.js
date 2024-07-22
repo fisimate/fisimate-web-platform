@@ -83,6 +83,21 @@ export const useDeleteQuiz = ({ onSuccess, onError, token, simulationId }) => {
   });
 };
 
+export const useGenerateQuestion = ({ simulationId, token }) => {
+  return useQuery({
+    queryKey: [`generate`],
+    queryFn: async () => {
+      return await axiosInstance.get(`/simulations/${simulationId}/generate`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    gcTime: 0,
+    enabled: false,
+  });
+};
+
 export const useGetQuizHistories = ({ token, studentId }) => {
   return useQuery({
     queryKey: [`histories-${studentId}`],

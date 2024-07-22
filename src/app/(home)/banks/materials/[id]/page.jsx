@@ -152,7 +152,7 @@ export default function EditMaterials({ params }) {
                 />
 
                 <div className="flex gap-4 justify-end">
-                  <Link href={"/banks/exams"}>
+                  <Link href={"/banks/materials"}>
                     <Button
                       text={"Cancel"}
                       variant="outline"
