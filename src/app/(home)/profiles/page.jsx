@@ -43,7 +43,6 @@ export default function Profile() {
     initialValues: {
       fullname: "",
       email: "",
-      nis: "333", // need fixing
     },
     onSubmit: (values) => {
       mutate(values);

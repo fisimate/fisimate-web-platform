@@ -11,7 +11,7 @@ export default function TBody({
   fields,
 }) {
   const renderField = (field, value) => {
-    if (!value) return null;
+    if (value == null || value === "") return null;
 
     if (
       field === "icon" ||
@@ -20,7 +20,7 @@ export default function TBody({
     ) {
       return (
         <img
-          src={value ?? "/images/user/user-avatar.png"}
+          src={value || "/images/user/user-avatar.png"}
           alt="icon"
           className="h-16 w-16 object-contain rounded-md"
         />
