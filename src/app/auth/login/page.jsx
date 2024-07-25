@@ -294,7 +294,7 @@ export default function Login() {
                     <button
                       type="submit"
                       disabled={isPending}
-                      className="w-full gap-2 items-center justify-center rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                      className="w-full flex gap-2 items-center justify-center rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                     >
                       {isPending ? (
                         <>
