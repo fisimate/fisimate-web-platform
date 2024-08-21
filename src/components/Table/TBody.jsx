@@ -18,9 +18,11 @@ export default function TBody({
       field === "user.profilePicture" ||
       field === "profilePicture"
     ) {
+      const imageUrl = value ?? "/images/user/user-avatar.png";
+
       return (
         <img
-          src={value || "/images/user/user-avatar.png"}
+          src={imageUrl}
           alt="icon"
           className="h-16 w-16 object-contain rounded-md"
         />
