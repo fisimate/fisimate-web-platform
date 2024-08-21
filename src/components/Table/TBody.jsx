@@ -18,7 +18,7 @@ export default function TBody({
       field === "user.profilePicture" ||
       field === "profilePicture"
     ) {
-      const imageUrl = value ?? "/images/user/user-avatar.png";
+      const imageUrl = value || "/images/user/dummy-siswa.jpg";
 
       return (
         <img
