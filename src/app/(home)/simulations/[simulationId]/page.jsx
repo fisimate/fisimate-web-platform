@@ -345,7 +345,7 @@ export default function SimulationDetail({ params }) {
         formData.append(`options[${index}][text]`, option.text);
         formData.append(
           `options[${index}][isCorrect]`,
-          option.isCorrect.toString()
+          JSON.parse(option.isCorrect)
         );
       });
 
