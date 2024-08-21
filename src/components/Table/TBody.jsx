@@ -19,7 +19,7 @@ export default function TBody({
       field === "profilePicture"
     ) {
       const imageUrl =
-        value && value !== "" ? value : "/images/user/dummy-siswa.jpg"; // Use default image if value is empty
+        value && value !== "" ? value : "/images/user/dummy-siswa.jpg"; // Check if value is null, undefined, or empty
 
       return (
         <img

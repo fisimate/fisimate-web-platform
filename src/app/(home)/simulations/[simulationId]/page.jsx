@@ -343,10 +343,7 @@ export default function SimulationDetail({ params }) {
       values.options.forEach((option, index) => {
         formData.append(`options[${index}][id]`, option.id ?? "");
         formData.append(`options[${index}][text]`, option.text);
-        formData.append(
-          `options[${index}][isCorrect]`,
-          JSON.parse(option.isCorrect)
-        );
+        formData.append(`options[${index}][isCorrect]`, option.isCorrect);
       });
 
       if (files != null) {
