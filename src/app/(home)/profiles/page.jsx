@@ -347,7 +347,7 @@ export default function Profile() {
                       <p>
                         <span className="text-primary">Klik untuk upload</span>
                       </p>
-                      <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
+                      <p className="mt-1.5">JPEG, PNG, JPG</p>
                     </div>
                   </div>
 

@@ -62,7 +62,7 @@ export default function StudentPage() {
   const headers = [
     {
       Header: "Foto Profil",
-      accessor: "avatar",
+      accessor: "profilePicture",
     },
     {
       Header: "Nama Lengkap",

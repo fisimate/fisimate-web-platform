@@ -213,10 +213,10 @@ export default function Login() {
             <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
               <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                 <span className="mb-1.5 block font-medium text-body">
-                  Welcome back, Admin!
+                  Selamat datang kembali!
                 </span>
                 <h2 className="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                  Sign In to Continue
+                  Silahkan login terlebih dahulu
                 </h2>
 
                 <form onSubmit={formik.handleSubmit}>
@@ -323,7 +323,7 @@ export default function Login() {
                           Loading...
                         </>
                       ) : (
-                        "Sign In"
+                        "Login"
                       )}
                     </button>
                   </div>
