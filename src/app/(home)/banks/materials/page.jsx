@@ -130,7 +130,7 @@ export default function MaterialBank() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/banks/materials/create"}>
-                  <Button text={"Tambah Materi"} />
+                  <Button text={"Tambah"} />
                 </Link>
               </div>
             }

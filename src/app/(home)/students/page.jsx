@@ -132,7 +132,7 @@ export default function StudentPage() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/students/create"}>
-                  <Button text={"Tambah Siswa"} />
+                  <Button text={"Tambah"} />
                 </Link>
               </div>
             }

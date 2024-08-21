@@ -130,7 +130,7 @@ export default function ExamBank() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/chapters/create"}>
-                  <Button text={"Tambah Bab"} />
+                  <Button text={"Tambah"} />
                 </Link>
               </div>
             }

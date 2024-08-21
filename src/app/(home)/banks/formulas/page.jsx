@@ -130,7 +130,7 @@ export default function FormulaBank() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/banks/formulas/create"}>
-                  <Button text={"Tambah Rumus"} />
+                  <Button text={"Tambah"} />
                 </Link>
               </div>
             }
