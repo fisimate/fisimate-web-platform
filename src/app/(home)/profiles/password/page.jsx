@@ -58,19 +58,19 @@ export default function UpdatePassword() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Password"} />
+      <Breadcrumb pageName={"Ubah Password"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Password
+              Ubah Password
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="p-6.5">
               <InputGroup
-                label={"Old Password"}
+                label={"Password Lama"}
                 type="password"
                 name="oldPassword"
                 onChange={handleChange}
@@ -78,7 +78,7 @@ export default function UpdatePassword() {
               />
 
               <InputGroup
-                label={"New Password"}
+                label={"Password Baru"}
                 type="password"
                 name="newPassword"
                 onChange={handleChange}
@@ -86,7 +86,7 @@ export default function UpdatePassword() {
               />
 
               <InputGroup
-                label={"Confirmation Password"}
+                label={"Konfirmasi Password"}
                 type="password"
                 name="passwordConfirmation"
                 onChange={handleChange}
@@ -96,12 +96,12 @@ export default function UpdatePassword() {
               <div className="flex gap-4 justify-end">
                 <Link href={"/profiles"}>
                   <Button
-                    text={"Cancel"}
+                    text={"Batal"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Update"} type="submit" disabled={isPending} />
+                <Button text={"Ubah"} type="submit" disabled={isPending} />
               </div>
             </div>
           </form>

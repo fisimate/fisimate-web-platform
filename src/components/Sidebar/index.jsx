@@ -196,7 +196,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   );
                 }}
               </SidebarLinkGroup>
-              <SidebarItem href={"/leaderboards"} text={"Leaderboard"}>
+              <SidebarItem href={"/leaderboards"} text={"Papan Peringkat"}>
                 <SlChart />
               </SidebarItem>
               <SidebarItem href={"/simulations"} text={"Simulasi"}>

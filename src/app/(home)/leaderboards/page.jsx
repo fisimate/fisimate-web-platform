@@ -26,11 +26,11 @@ export default function Leaderboard() {
 
   const headers = [
     {
-      Header: "Avatar",
+      Header: "Foto Profil",
       accessor: "avatar",
     },
     {
-      Header: "Fullname",
+      Header: "Nama Lengkap",
       accessor: "fullname",
     },
     {
@@ -42,7 +42,7 @@ export default function Leaderboard() {
       accessor: "email",
     },
     {
-      Header: "Score",
+      Header: "Total Skor",
       accessor: "score",
     },
   ];
@@ -65,7 +65,7 @@ export default function Leaderboard() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Leaderboard"} />
+      <Breadcrumb pageName={"Papan Peringkat"} />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <Table

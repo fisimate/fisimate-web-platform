@@ -76,7 +76,7 @@ export default function Profile() {
   const { mutate, isPending } = useUpdateProfile({
     onSuccess: () => {
       toast({
-        title: "Berhasil update profile!",
+        title: "Berhasil ubah profile!",
         status: "success",
         isClosable: true,
         position: "top-right",
@@ -100,7 +100,7 @@ export default function Profile() {
   const { mutate: mutatePicture } = useUpdateProfilePicture({
     onSuccess: () => {
       toast({
-        title: "Berhasil update profile!",
+        title: "Berhasil ubah profile!",
         status: "success",
         isClosable: true,
         position: "top-right",
@@ -141,14 +141,14 @@ export default function Profile() {
 
   return (
     <div className="mx-auto max-w-270">
-      <Breadcrumb pageName="Update Profile" />
+      <Breadcrumb pageName="Ubah Profile" />
 
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Personal Information
+                Informasi Pribadi
               </h3>
             </div>
             <div className="p-7">
@@ -163,7 +163,7 @@ export default function Profile() {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullname"
                     >
-                      Full Name
+                      Nama Lengkap
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -208,7 +208,7 @@ export default function Profile() {
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="email"
                     >
-                      Email Address
+                      Alamat Email
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -253,14 +253,14 @@ export default function Profile() {
                       onClick={refetch}
                       type="button"
                       size="md"
-                      text={"Cancel"}
+                      text={"Batal"}
                       variant="outline"
                     />
                     <Button
                       onClick={refetch}
                       type="submit"
                       size="md"
-                      text={"Save"}
+                      text={"Simpan"}
                     />
                   </div>
                 </form>
@@ -272,7 +272,7 @@ export default function Profile() {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Your Photo
+                Foto Profil
               </h3>
             </div>
             <div className="p-7">
@@ -298,7 +298,7 @@ export default function Profile() {
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
-                        Edit your photo
+                        Ubah foto profilmu
                       </span>
                     </div>
                   </div>
@@ -345,11 +345,9 @@ export default function Profile() {
                         </svg>
                       </span>
                       <p>
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
+                        <span className="text-primary">Klik untuk upload</span>
                       </p>
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                      <p>(max, 800 X 800px)</p>
                     </div>
                   </div>
 
@@ -362,14 +360,14 @@ export default function Profile() {
                       }}
                       type="button"
                       size="md"
-                      text={"Cancel"}
+                      text={"Batal"}
                       variant="outline"
                     />
                     <Button
                       onClick={refetch}
                       type="submit"
                       size="md"
-                      text={"Save"}
+                      text={"Simpan"}
                     />
                   </div>
                 </form>

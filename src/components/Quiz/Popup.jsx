@@ -206,8 +206,7 @@ export default function PopUp({
                         </svg>
                       </span>
                       <p className="text-xs">
-                        <span className="text-primary">Click to upload</span> or
-                        drag and drop
+                        <span className="text-primary">Klik untuk upload</span>
                       </p>
                     </div>
                   </div>
@@ -278,7 +277,7 @@ export default function PopUp({
                     Loading...
                   </>
                 ) : (
-                  "Clear Form"
+                  "Bersihkan Form"
                 )}
               </button>
             </div>
@@ -311,7 +310,7 @@ export default function PopUp({
                   Loading...
                 </>
               ) : (
-                "Save"
+                "Simpan"
               )}
             </button>
           </form>

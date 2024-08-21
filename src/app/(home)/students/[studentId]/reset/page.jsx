@@ -55,13 +55,13 @@ export default function ResetPassword({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Reset Password"} />
+      <Breadcrumb pageName={"Ganti Password"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Reset Password
+              Ganti Password
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
@@ -78,12 +78,12 @@ export default function ResetPassword({ params }) {
               <div className="flex gap-4 justify-end">
                 <Link href={"/students"}>
                   <Button
-                    text={"Cancel"}
+                    text={"Batal"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Update"} type="submit" isLoading={isPending} />
+                <Button text={"Ubah"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>

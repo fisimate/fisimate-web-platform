@@ -133,7 +133,7 @@ const DropdownUser = () => {
                   fill=""
                 />
               </svg>
-              My Profile
+              Profil
             </Link>
           </li>
           <li>
@@ -144,7 +144,7 @@ const DropdownUser = () => {
               <span className="text-xl">
                 <PiKey />
               </span>
-              Update Password
+              Ubah Password
             </Link>
           </li>
         </ul>

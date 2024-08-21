@@ -63,19 +63,19 @@ export default function CreateStudent() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Create Siswa"} />
+      <Breadcrumb pageName={"Tambah Siswa"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Create Siswa
+              Tambah Siswa
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="p-6.5">
               <InputGroup
-                label={"Fullname"}
+                label={"Nama Lengkap"}
                 type="text"
                 name="fullname"
                 onChange={handleChange}
@@ -83,7 +83,7 @@ export default function CreateStudent() {
               />
 
               <FileInput
-                label={"Foto Profile"}
+                label={"Foto Profil"}
                 type="file"
                 name="profilePicture"
                 onChange={(e) =>
@@ -93,7 +93,7 @@ export default function CreateStudent() {
               />
 
               <InputGroup
-                label={"Email"}
+                label={"Alamat Email"}
                 type="email"
                 name="email"
                 onChange={handleChange}
@@ -119,12 +119,12 @@ export default function CreateStudent() {
               <div className="flex gap-4 justify-end">
                 <Link href={"/students"}>
                   <Button
-                    text={"Cancel"}
+                    text={"Batal"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Create"} type="submit" isLoading={isPending} />
+                <Button text={"Ubah"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>

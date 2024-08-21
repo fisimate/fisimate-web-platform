@@ -68,7 +68,7 @@ export default function Table({
               value={globalFilter}
               onChange={(e) => setGlobalFilter(e.target.value)}
               className="w-full rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-              placeholder="Search..."
+              placeholder="Cari data..."
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function Table({
                 className="border-b border-[#eee] px-4 py-5 text-center"
                 colSpan={columns.length + 2}
               >
-                No data available
+                Data tidak ada
               </td>
             </tr>
           </tbody>
@@ -130,7 +130,7 @@ export default function Table({
                 </option>
               ))}
             </select>
-            <p className="pl-2 text-black dark:text-white">Data Per Page</p>
+            <p className="pl-2 text-black dark:text-white">Data Per Halaman</p>
           </div>
           <div className="flex">
             <button

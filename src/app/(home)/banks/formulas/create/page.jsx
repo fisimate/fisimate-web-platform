@@ -68,13 +68,13 @@ export default function CreateFormulaBank() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Create Bank Rumus"} />
+      <Breadcrumb pageName={"Tambah Bank Rumus"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Create Bank Rumus
+              Tambah Bank Rumus
             </h3>
           </div>
           {isLoading ? (
@@ -85,7 +85,7 @@ export default function CreateFormulaBank() {
             <form onSubmit={formik.handleSubmit}>
               <div className="p-6.5">
                 <InputGroup
-                  label={"Title"}
+                  label={"Judul"}
                   type="text"
                   name="title"
                   onChange={handleChange}
@@ -123,12 +123,12 @@ export default function CreateFormulaBank() {
                 <div className="flex gap-4 justify-end">
                   <Link href={"/banks/formulas"}>
                     <Button
-                      text={"Cancel"}
+                      text={"Batal"}
                       variant="outline"
                       disabled={isPending}
                     />
                   </Link>
-                  <Button text={"Create"} type="submit" isLoading={isPending} />
+                  <Button text={"Tambah"} type="submit" isLoading={isPending} />
                 </div>
               </div>
             </form>

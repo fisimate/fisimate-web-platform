@@ -54,12 +54,12 @@ export default function SimulationDetail({ params }) {
 
   const modalActions = [
     {
-      label: "Cancel",
+      label: "Batal",
       onClick: closeModal,
       primary: false,
     },
     {
-      label: "Delete",
+      label: "Hapus",
       onClick: () => {
         if (selectedData) {
           mutateDeleteQuizReview();
@@ -73,12 +73,12 @@ export default function SimulationDetail({ params }) {
 
   const modalTwoActions = [
     {
-      label: "Cancel",
+      label: "Batal",
       onClick: closeModalTwo,
       primary: false,
     },
     {
-      label: "Delete",
+      label: "Hapus",
       onClick: () => {
         if (selectedDataTwo) {
           mutateDeleteMaterial({ dataId: selectedDataTwo.id });
@@ -219,7 +219,7 @@ export default function SimulationDetail({ params }) {
       simulationId,
       onSuccess: () => {
         toast({
-          title: "Berhasil update data!",
+          title: "Berhasil ubah data!",
           status: "success",
           isClosable: true,
           position: "top-right",
@@ -264,7 +264,7 @@ export default function SimulationDetail({ params }) {
     simulationId,
     onSuccess: () => {
       toast({
-        title: "Berhasil hapus data!",
+        title: "Berhasil ubah data!",
         status: "success",
         isClosable: true,
         position: "top-right",
@@ -388,15 +388,15 @@ export default function SimulationDetail({ params }) {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={"Delete data"}
-        content={"Are you sure want to delete this data?"}
+        title={"Hapus data"}
+        content={"Apakah kamu yakin ingin manghapus data?"}
         actions={modalActions}
       />
       <Modal
         isOpen={isModalTwoOpen}
         onClose={closeModalTwo}
-        title={"Delete data"}
-        content={"Are you sure want to delete this data?"}
+        title={"Hapus data"}
+        content={"Apakah kamu yakin ingin manghapus data?"}
         actions={modalTwoActions}
       />
       <Breadcrumb pageName={"Detail Simulasi"} />
@@ -433,7 +433,7 @@ export default function SimulationDetail({ params }) {
             ?.data ? (
           <Link href={`/simulations/${simulationId}/reviews/create`}>
             <button className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80">
-              Create
+              Tambah
             </button>
           </Link>
         ) : null}
@@ -465,7 +465,7 @@ export default function SimulationDetail({ params }) {
           }}
           className="flex items-center gap-2 rounded-md bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-80"
         >
-          Create
+          Tambah
         </button>
         <PopUp
           popupOpen={popupOpen}

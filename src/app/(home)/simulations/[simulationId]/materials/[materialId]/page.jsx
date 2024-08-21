@@ -66,13 +66,13 @@ export default function EditMaterial({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Materi Simulasi"} />
+      <Breadcrumb pageName={"Ubah Materi Simulasi"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Materi Simulasi
+              Ubah Materi Simulasi
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
@@ -90,12 +90,12 @@ export default function EditMaterial({ params }) {
               <div className="flex gap-4 justify-end">
                 <Link href={`/simulations/${simulationId}`}>
                   <Button
-                    text={"Cancel"}
+                    text={"Batal"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Update"} type="submit" isLoading={isPending} />
+                <Button text={"Ubah"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>

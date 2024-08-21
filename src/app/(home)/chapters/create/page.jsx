@@ -61,19 +61,19 @@ export default function CreateChapter() {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Create Bab Baru"} />
+      <Breadcrumb pageName={"Tambah Bab Baru"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Create Bab Baru
+              Tambah Bab Baru
             </h3>
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="p-6.5">
               <InputGroup
-                label={"Nama"}
+                label={"Judul"}
                 type="text"
                 name="name"
                 onChange={handleChange}
@@ -101,12 +101,12 @@ export default function CreateChapter() {
               <div className="flex gap-4 justify-end">
                 <Link href={"/chapters"}>
                   <Button
-                    text={"Cancel"}
+                    text={"Batal"}
                     variant="outline"
                     disabled={isPending}
                   />
                 </Link>
-                <Button text={"Create"} type="submit" isLoading={isPending} />
+                <Button text={"Tambah"} type="submit" isLoading={isPending} />
               </div>
             </div>
           </form>

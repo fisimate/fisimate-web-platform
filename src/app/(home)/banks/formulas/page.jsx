@@ -66,7 +66,7 @@ export default function FormulaBank() {
       accessor: "icon",
     },
     {
-      Header: "Title",
+      Header: "Judul",
       accessor: "title",
     },
     {
@@ -91,12 +91,12 @@ export default function FormulaBank() {
 
   const modalActions = [
     {
-      label: "Cancel",
+      label: "Batal",
       onClick: closeModal,
       primary: false,
     },
     {
-      label: "Delete",
+      label: "Hpus",
       onClick: () => {
         if (selectedData) {
           mutate({ token, dataId: selectedData.id });
@@ -114,8 +114,8 @@ export default function FormulaBank() {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={"Delete data"}
-        content={"Are you sure want to delete this data?"}
+        title={"Hapus data"}
+        content={"Apakah kamu yakin ingin manghapus data?"}
         actions={modalActions}
       />
       <div className="flex flex-col gap-10">
@@ -130,7 +130,7 @@ export default function FormulaBank() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/banks/formulas/create"}>
-                  <Button text={"Create Rumus"} />
+                  <Button text={"Tambah Rumus"} />
                 </Link>
               </div>
             }

@@ -61,11 +61,11 @@ export default function StudentPage() {
 
   const headers = [
     {
-      Header: "Avatar",
+      Header: "Foto Profil",
       accessor: "avatar",
     },
     {
-      Header: "Fullname",
+      Header: "Nama Lengkap",
       accessor: "fullname",
     },
     {
@@ -73,7 +73,7 @@ export default function StudentPage() {
       accessor: "nis",
     },
     {
-      Header: "Email",
+      Header: "Alamat Email",
       accessor: "email",
     },
   ];
@@ -94,12 +94,12 @@ export default function StudentPage() {
 
   const modalActions = [
     {
-      label: "Cancel",
+      label: "Batal",
       onClick: closeModal,
       primary: false,
     },
     {
-      label: "Delete",
+      label: "Hapus",
       onClick: () => {
         if (selectedData) {
           mutate({ token, studentId: selectedData.id });
@@ -117,8 +117,8 @@ export default function StudentPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={"Delete data"}
-        content={"Are you sure want to delete this data?"}
+        title={"Hapus data"}
+        content={"Apakah kamu yakin ingin manghapus data?"}
         actions={modalActions}
       />
       <div className="flex flex-col gap-10">
@@ -132,7 +132,7 @@ export default function StudentPage() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/students/create"}>
-                  <Button text={"Create Siswa"} />
+                  <Button text={"Tambah Siswa"} />
                 </Link>
               </div>
             }

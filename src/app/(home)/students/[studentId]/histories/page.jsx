@@ -1,12 +1,10 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
-import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
 import Table from "@/components/Table";
 import { useGetQuizHistories } from "@/hooks/useQuiz";
 import { useGetToken } from "@/hooks/useToken";
 import convertDate from "@/utils/convertDate";
-import Link from "next/link";
 import React from "react";
 
 export default function StudentHistories({ params }) {
@@ -29,7 +27,7 @@ export default function StudentHistories({ params }) {
       accessor: "simulasi",
     },
     {
-      Header: "Score",
+      Header: "Skor",
       accessor: "score",
     },
     {
@@ -49,7 +47,7 @@ export default function StudentHistories({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Student Histories"} />
+      <Breadcrumb pageName={"Riwayat Kuis Siswa"} />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <Table

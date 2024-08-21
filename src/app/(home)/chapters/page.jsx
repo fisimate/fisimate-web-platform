@@ -40,11 +40,11 @@ export default function ExamBank() {
       accessor: "icon",
     },
     {
-      Header: "Name",
+      Header: "Judul Bab",
       accessor: "name",
     },
     {
-      Header: "Short Description",
+      Header: "Deskripsi Singkat",
       accessor: "shortDescription",
     },
   ];
@@ -86,12 +86,12 @@ export default function ExamBank() {
 
   const modalActions = [
     {
-      label: "Cancel",
+      label: "Batal",
       onClick: closeModal,
       primary: false,
     },
     {
-      label: "Delete",
+      label: "Hapus",
       onClick: () => {
         if (selectedData) {
           mutate();
@@ -114,8 +114,8 @@ export default function ExamBank() {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={"Delete data"}
-        content={"Are you sure want to delete this data?"}
+        title={"Hapus data"}
+        content={"Apakah kamu yakin ingin manghapus data?"}
         actions={modalActions}
       />
       <div className="flex flex-col gap-10">
@@ -130,7 +130,7 @@ export default function ExamBank() {
             button={
               <div className="flex justify-end mb-6">
                 <Link href={"/chapters/create"}>
-                  <Button text={"Create Bab"} />
+                  <Button text={"Tambah Bab"} />
                 </Link>
               </div>
             }

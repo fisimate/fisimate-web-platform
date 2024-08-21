@@ -22,17 +22,17 @@ export default function Dashboard() {
       icon: <PiStudent />,
     },
     {
-      label: "Total Materi",
+      label: "Total Bank Materi",
       value: data?.data?.data?.totalMaterials,
       icon: <PiBook />,
     },
     {
-      label: "Total Kuis",
+      label: "Total Bank Kuis",
       value: data?.data?.data?.totalExams,
       icon: <PiBookOpenText />,
     },
     {
-      label: "Total Rumus",
+      label: "Total Bank Rumus",
       value: data?.data?.data?.totalFormulas,
       icon: <RiFormula />,
     },

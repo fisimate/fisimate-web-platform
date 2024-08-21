@@ -22,7 +22,7 @@ export default function Simulation() {
       acccessor: "icon",
     },
     {
-      Header: "Title",
+      Header: "Judul",
       acccessor: "title",
     },
 

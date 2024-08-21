@@ -34,7 +34,7 @@ export default function Thead({ headerGroups, action }) {
             })}
             {action && (
               <th className="px-4 py-4 font-medium text-black dark:text-white">
-                Actions
+                Aksi
               </th>
             )}
           </tr>

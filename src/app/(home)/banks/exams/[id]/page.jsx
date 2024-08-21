@@ -97,13 +97,13 @@ export default function EditExam({ params }) {
 
   return (
     <React.Fragment>
-      <Breadcrumb pageName={"Update Bank Soal"} />
+      <Breadcrumb pageName={"Ubah Bank Soal"} />
 
       <div className="flex flex-col gap-9">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
-              Update Bank Soal
+              Ubah Bank Soal
             </h3>
           </div>
           {isLoadingData ? (
@@ -114,7 +114,7 @@ export default function EditExam({ params }) {
             <form onSubmit={formik.handleSubmit}>
               <div className="p-6.5">
                 <InputGroup
-                  label={"Title"}
+                  label={"Judul"}
                   type="text"
                   name="title"
                   value={formik.values.title}
@@ -154,12 +154,12 @@ export default function EditExam({ params }) {
                 <div className="flex gap-4 justify-end">
                   <Link href={"/banks/exams"}>
                     <Button
-                      text={"Cancel"}
+                      text={"Batal"}
                       variant="outline"
                       disabled={isPending}
                     />
                   </Link>
-                  <Button text={"Update"} type="submit" isLoading={isPending} />
+                  <Button text={"Ubah"} type="submit" isLoading={isPending} />
                 </div>
               </div>
             </form>
