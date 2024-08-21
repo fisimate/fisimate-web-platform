@@ -339,12 +339,16 @@ export default function SimulationDetail({ params }) {
     onSubmit: (values) => {
       const formData = new FormData();
       formData.append("text", values.text);
-
-      values.options.forEach((option, index) => {
-        formData.append(`options[${index}][id]`, option.id ?? "");
-        formData.append(`options[${index}][text]`, option.text);
-        formData.append(`options[${index}][isCorrect]`, option.isCorrect);
-      });
+      formData.append(
+        "options",
+        JSON.stringify(
+          values.options.map((option) => ({
+            id: option.id ?? null,
+            text: option.text,
+            isCorrect: option.isCorrect,
+          }))
+        )
+      );
 
       if (files != null) {
         if (!files.type) {
