@@ -2,6 +2,7 @@ import getLastPathUrl from "@/utils/getLastPathUrl";
 import Link from "next/link";
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function TBody({ rows, action, fields }) {
   const renderField = (field, value) => {
@@ -16,8 +17,9 @@ export default function TBody({ rows, action, fields }) {
         value && value !== "" ? value : "/images/user/dummy-siswa.jpg"; // Check if value is null, undefined, or empty
 
       return (
-        <img
+        <ImageWithFallback
           src={imageUrl}
+          fallbackSrc="/images/user/dummy-siswa.jpg"
           alt="icon"
           className="h-16 w-16 object-contain rounded-md"
         />

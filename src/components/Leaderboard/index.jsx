@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function Leaderboard({ data }) {
   return (
@@ -15,12 +16,13 @@ export default function Leaderboard({ data }) {
             key={key}
           >
             <span className="h-12 w-12 rounded-full overflow-hidden">
-              <img
+              <ImageWithFallback
                 width={48}
                 height={48}
                 src={
                   item?.user?.profilePicture ?? "/images/user/user-avatar.png"
                 }
+                fallbackSrc="/images/user/user-avatar.png"
                 style={{
                   width: "100%",
                   height: "100%",

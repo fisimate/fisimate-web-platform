@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../Modal";
 import DropdownDefault from "../Dropdown/DropdownDefault";
 import getLastPathUrl from "@/utils/getLastPathUrl";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function QuizCard({
   question,
@@ -53,10 +54,11 @@ export default function QuizCard({
         <div className="relative flex justify-between rounded-sm border border-stroke bg-white p-7 shadow-default dark:border-strokedark dark:bg-boxdark">
           <div>
             {question.imageUrl && (
-              <img
+              <ImageWithFallback
                 src={question.imageUrl}
+                fallbackSrc=""
                 alt="img-kuis"
-                className="h-40 my-5"
+                className="h-40 my-5 w-auto object-contain"
               />
             )}
             <h5 className="mb-4 text-lg font-medium text-black dark:text-white">

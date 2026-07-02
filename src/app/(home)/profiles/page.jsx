@@ -2,6 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import Spinner from "@/components/Spinner";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import {
   useGetProfile,
   useUpdateProfile,
@@ -284,8 +285,9 @@ export default function Profile() {
                 <form onSubmit={pictureForm.handleSubmit}>
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full overflow-hidden">
-                      <img
+                      <ImageWithFallback
                         src={imgSrc ?? file ?? "/images/user/user-avatar.png"}
+                        fallbackSrc="/images/user/user-avatar.png"
                         width={55}
                         height={55}
                         alt="User"

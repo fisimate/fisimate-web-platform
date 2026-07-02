@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useGetToken, useRemoveToken } from "@/hooks/useToken";
 import { useGetProfile } from "@/hooks/useProfile";
 import { PiKey } from "react-icons/pi";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -69,12 +70,13 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 rounded-full overflow-hidden">
-          <img
+          <ImageWithFallback
             width={48}
             height={48}
             src={
               data?.data?.data.profilePicture ?? "/images/user/user-avatar.png"
             }
+            fallbackSrc="/images/user/user-avatar.png"
             style={{
               width: "100%",
               height: "100%",
