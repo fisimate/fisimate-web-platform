@@ -3,13 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 
-export default function TBody({
-  getTableBodyProps,
-  page,
-  prepareRow,
-  action,
-  fields,
-}) {
+export default function TBody({ rows, action, fields }) {
   const renderField = (field, value) => {
     if (value == null || value === "") return null;
 
@@ -66,39 +60,35 @@ export default function TBody({
   };
 
   return (
-    <tbody {...getTableBodyProps()}>
-      {page.map((row, i) => {
-        prepareRow(row);
-        const { key, ...rowProps } = row.getRowProps();
-        return (
-          <tr key={key} {...rowProps}>
+    <tbody>
+      {rows.map((row) => (
+        <tr key={row.id}>
+          <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+            <div className="flex items-center space-x-3.5">
+              <p className="text-black dark:text-white">{row.index + 1}</p>
+            </div>
+          </td>
+          {fields.map((field, i) => (
+            <td
+              key={i}
+              className="border-b border-[#eee] px-4 py-5 dark:border-strokedark"
+            >
+              <p className="text-black dark:text-white">
+                {renderField(field, getField(row.original, field))}
+              </p>
+            </td>
+          ))}
+          {action && (
             <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
               <div className="flex items-center space-x-3.5">
-                <p className="text-black dark:text-white">{row.index + 1}</p>
+                <p className="text-black dark:text-white flex gap-3">
+                  {action(row.original)}
+                </p>
               </div>
             </td>
-            {fields.map((field, i) => (
-              <td
-                key={i}
-                className="border-b border-[#eee] px-4 py-5 dark:border-strokedark"
-              >
-                <p className="text-black dark:text-white">
-                  {renderField(field, getField(row.original, field))}
-                </p>
-              </td>
-            ))}
-            {action && (
-              <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <div className="flex items-center space-x-3.5">
-                  <p className="text-black dark:text-white flex gap-3">
-                    {action(row.original)}
-                  </p>
-                </div>
-              </td>
-            )}
-          </tr>
-        );
-      })}
+          )}
+        </tr>
+      ))}
     </tbody>
   );
 }

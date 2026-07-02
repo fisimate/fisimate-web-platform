@@ -1,14 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Thead from "./Thead";
 import TBody from "./TBody";
 import Spinner from "../Spinner";
 import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  useFilters,
-  usePagination,
-} from "react-table";
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+} from "@tanstack/react-table";
 
 export default function Table({
   headers,
@@ -25,38 +25,35 @@ export default function Table({
     () => (Array.isArray(tableData) ? tableData : []),
     [tableData]
   );
-  const columns = useMemo(() => headers || [], [headers]);
 
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageSize: 5 },
-    },
-    useFilters,
-    useGlobalFilter,
-    useSortBy,
-    usePagination
+  // react-table v7 memakai `{ Header, accessor }`; @tanstack/react-table v8
+  // memakai `{ header, accessorKey }`. Bentuk props publik (`headers`) tetap
+  // dipertahankan agar seluruh pemanggil tidak perlu berubah.
+  const columns = useMemo(
+    () =>
+      (headers || []).map((header) => ({
+        accessorKey: header.accessor,
+        header: header.Header,
+      })),
+    [headers]
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    prepareRow,
-    state,
-    setGlobalFilter,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    setPageSize,
-    gotoPage,
-  } = tableInstance;
+  const [globalFilter, setGlobalFilter] = useState("");
 
-  const { globalFilter, pageIndex, pageSize } = state;
+  const table = useReactTable({
+    data,
+    columns,
+    state: { globalFilter },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 5 } },
+  });
+
+  const { pageIndex, pageSize } = table.getState().pagination;
+  const pageCount = table.getPageCount();
 
   return (
     <div className="max-w-full overflow-x-auto">
@@ -65,7 +62,7 @@ export default function Table({
           <div className="w-100">
             <input
               type="text"
-              value={globalFilter}
+              value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
               className="w-full rounded-md border border-stroke px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
               placeholder="Cari data..."
@@ -75,8 +72,8 @@ export default function Table({
           {button}
         </div>
       )}
-      <table className="w-full table-auto" {...getTableProps()}>
-        <Thead headerGroups={headerGroups} action={action} />
+      <table className="w-full table-auto">
+        <Thead headerGroups={table.getHeaderGroups()} action={action} />
         {isLoading || isRefetching ? (
           <tbody>
             <tr>
@@ -92,9 +89,7 @@ export default function Table({
           </tbody>
         ) : data.length > 0 ? (
           <TBody
-            getTableBodyProps={getTableBodyProps}
-            page={page}
-            prepareRow={prepareRow}
+            rows={table.getRowModel().rows}
             action={action}
             fields={fields}
           />
@@ -117,16 +112,16 @@ export default function Table({
           <div className="flex items-center font-medium">
             <select
               value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
+              onChange={(e) => table.setPageSize(Number(e.target.value))}
               className="bg-transparent pl-2"
             >
-              {[5, 10, 20, 50].map((page) => (
+              {[5, 10, 20, 50].map((size) => (
                 <option
-                  key={page}
-                  value={page}
+                  key={size}
+                  value={size}
                   className="text-black dark:text-white"
                 >
-                  {page}
+                  {size}
                 </option>
               ))}
             </select>
@@ -135,8 +130,8 @@ export default function Table({
           <div className="flex">
             <button
               className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-whiter"
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
             >
               <svg
                 className="fill-current"
@@ -153,10 +148,10 @@ export default function Table({
               </svg>
             </button>
 
-            {pageOptions.map((_page, index) => (
+            {Array.from({ length: pageCount }).map((_, index) => (
               <button
                 key={index}
-                onClick={() => gotoPage(index)}
+                onClick={() => table.setPageIndex(index)}
                 className={`${
                   pageIndex === index && "bg-primary text-white"
                 } mx-1 flex cursor-pointer items-center justify-center rounded-md p-1 px-3 hover:bg-primary hover:text-white`}
@@ -167,8 +162,8 @@ export default function Table({
 
             <button
               className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-white"
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
             >
               <svg
                 className="fill-current"
