@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
@@ -9,14 +10,14 @@ import Spinner from "@/components/Spinner";
 import { useGetOneChapter, useUpdateChapter } from "@/hooks/useChapter";
 import { useFormData } from "@/hooks/useFormData";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function UpdateChapter({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const { push } = useRouter();
   const toast = useToast();
   const token = useGetToken();

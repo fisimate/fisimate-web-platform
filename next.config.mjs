@@ -14,6 +14,13 @@ const nextConfig = {
         hostname: "storage.googleapis.com",
         port: "",
       },
+      {
+        // fisimate-api sudah pindah ke Supabase Storage (public bucket).
+        protocol: "https",
+        hostname: "*.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
 };

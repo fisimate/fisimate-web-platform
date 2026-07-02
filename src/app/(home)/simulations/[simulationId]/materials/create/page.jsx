@@ -1,18 +1,19 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import FileInput from "@/components/Input/FileInput";
 import { useFormData } from "@/hooks/useFormData";
 import { useCreateMaterial } from "@/hooks/useMaterial";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function EditQuizReview({ params }) {
-  const { simulationId, reviewId } = params;
+  const { simulationId, reviewId } = use(params);
   const { push } = useRouter();
   const toast = useToast();
 

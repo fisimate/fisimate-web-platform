@@ -1,17 +1,18 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import { useResetPassword } from "@/hooks/useStudent";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function ResetPassword({ params }) {
-  const { studentId } = params;
+  const { studentId } = use(params);
   const { push } = useRouter();
   const token = useGetToken();
   const toast = useToast();

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import checkIsLoggedIn from "./middlewares/checkIsLoggedIn";
 
-export function middleware(request) {
+// Next 16: konvensi `middleware` diganti `proxy` (file src/proxy.js +
+// fungsi bernama `proxy`). Logika auth-gate tetap sama.
+export function proxy(request) {
   const token = request.cookies.get("token")?.value;
   const isLoggedIn = checkIsLoggedIn(token);
 
@@ -19,8 +21,5 @@ export function middleware(request) {
 export const config = {
   matcher: [
     "/((?!api|_next/static|.*svg|.*png|.*jpg|.*jpeg|.*gif|.*webp|_next/image|favicon.ico).*)",
-  ],
-  unstable_includeFiles: [
-    "node_modules/next/dist/compiled/@edge-runtime/primitives/**/*.+(js|json)",
   ],
 };

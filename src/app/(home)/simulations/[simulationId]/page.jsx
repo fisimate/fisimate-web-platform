@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import ErrorPage from "@/components/ErrorPage";
 import Modal from "@/components/Modal";
@@ -18,7 +19,7 @@ import {
 import { useDeleteQuizReview, useGetQuizReview } from "@/hooks/useQuizReview";
 import { useGetOneSimulation } from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,7 +29,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 export default function SimulationDetail({ params }) {
   const [isPopupForUpdate, setIsPopupForUpdate] = useState(false);
   const [deleteImage, setDeleteImage] = useState(false);
-  const { simulationId } = params;
+  const { simulationId } = use(params);
   const token = useGetToken();
   const toast = useToast();
   const { push } = useRouter();

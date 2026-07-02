@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
@@ -13,14 +14,14 @@ import {
   useUpdateSimulation,
 } from "@/hooks/useSimulation";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function EditSimulation({ params }) {
-  const { simulationId } = params;
+  const { simulationId } = use(params);
   const { push } = useRouter();
   const toast = useToast();
 

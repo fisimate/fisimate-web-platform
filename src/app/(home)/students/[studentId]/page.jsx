@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
@@ -8,14 +9,14 @@ import Spinner from "@/components/Spinner";
 import { useFormData } from "@/hooks/useFormData";
 import { useGetOneStudent, useUpdateStudent } from "@/hooks/useStudent";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function EditStudent({ params }) {
-  const { studentId } = params;
+  const { studentId } = use(params);
   const { push } = useRouter();
 
   const toast = useToast();

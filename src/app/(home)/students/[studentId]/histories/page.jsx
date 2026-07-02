@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import ErrorPage from "@/components/ErrorPage";
 import Table from "@/components/Table";
@@ -8,7 +9,7 @@ import convertDate from "@/utils/convertDate";
 import React from "react";
 
 export default function StudentHistories({ params }) {
-  const { studentId } = params;
+  const { studentId } = use(params);
 
   const token = useGetToken();
 

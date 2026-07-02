@@ -1,4 +1,5 @@
 "use client";
+import { use } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Button from "@/components/Button";
 import ErrorPage from "@/components/ErrorPage";
@@ -6,14 +7,14 @@ import FileInput from "@/components/Input/FileInput";
 import { useFormData } from "@/hooks/useFormData";
 import { useGetMaterials, useUpdateMaterial } from "@/hooks/useMaterial";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function EditMaterial({ params }) {
-  const { simulationId, materialId } = params;
+  const { simulationId, materialId } = use(params);
   const { push } = useRouter();
   const toast = useToast();
 
