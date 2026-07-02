@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4: satu `@import` menggantikan `@tailwind base/components/utilities`.
+   `@config` mempertahankan konfigurasi JS lama (colors/spacing/darkMode:class,
+   dll di tailwind.config.js) tanpa perlu migrasi CSS-first penuh. */
+@import "tailwindcss";
+@config "../../tailwind.config.js";
 
 @layer base {
   body {
