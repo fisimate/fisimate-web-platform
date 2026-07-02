@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import InputGroup from "@/components/InputGroup";
 import { useUpdatePassword } from "@/hooks/useProfile";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -6,7 +6,7 @@ import Table from "@/components/Table";
 import TableAction from "@/components/Table/TableAction";
 import { useDeleteBank, useGetBanks } from "@/hooks/useBank";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

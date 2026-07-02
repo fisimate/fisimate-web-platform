@@ -1,9 +1,20 @@
-"use client"
+"use client";
 
-import theme from "@/theme";
+import system from "@/theme";
+import EmotionRegistry from "@/utils/EmotionRegistry";
+import { Toaster } from "@/utils/toaster";
 import { ChakraProvider } from "@chakra-ui/react";
 import React from "react";
 
 export default function InitChakraProvider({ children }) {
-  return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
+  // Chakra v3: prop `theme` → `value` (system dari createSystem).
+  // EmotionRegistry menjaga style Emotion SSR agar tidak hydration-mismatch.
+  return (
+    <EmotionRegistry>
+      <ChakraProvider value={system}>
+        {children}
+        <Toaster />
+      </ChakraProvider>
+    </EmotionRegistry>
+  );
 }

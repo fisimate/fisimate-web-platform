@@ -8,7 +8,7 @@ import TableAction from "@/components/Table/TableAction";
 import { useDeleteChapter, useGetChapters } from "@/hooks/useChapter";
 import { useGetToken } from "@/hooks/useToken";
 import limitString from "@/utils/limitString";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

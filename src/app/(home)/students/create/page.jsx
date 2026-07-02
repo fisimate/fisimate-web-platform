@@ -6,7 +6,7 @@ import InputGroup from "@/components/InputGroup";
 import { useFormData } from "@/hooks/useFormData";
 import { useCreateStudent } from "@/hooks/useStudent";
 import { useGetToken } from "@/hooks/useToken";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "@/utils/useToast";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

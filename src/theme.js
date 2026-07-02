@@ -1,14 +1,15 @@
-import { extendTheme } from "@chakra-ui/react";
+import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
-const theme = extendTheme({
-  styles: {
-    global: () => ({
-      body: {
-        bg: "",
-        fontFamily: '"Poppins", sans-serif"',
-      },
-    }),
+// Chakra v3: `extendTheme` (v2) dihapus, diganti "system" hasil `createSystem`.
+// Global style (font Poppins) yang dulu di `styles.global` dipindah ke `globalCss`.
+const config = defineConfig({
+  globalCss: {
+    body: {
+      fontFamily: '"Poppins", sans-serif',
+    },
   },
 });
 
-export default theme;
+const system = createSystem(defaultConfig, config);
+
+export default system;
