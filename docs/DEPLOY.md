@@ -1,7 +1,8 @@
 # Deploy ke VPS (PM2 + Nginx)
 
-Panduan deploy `fisimate-web` ke VPS pribadi, jalan di PORT **3000**,
-di-manage oleh PM2, di-expose lewat Nginx reverse proxy ke domain
+Panduan deploy `fisimate-web` ke VPS pribadi, jalan di PORT **3006**
+(PORT 3000 di VPS ini sudah dipakai proses lain), di-manage oleh PM2,
+di-expose lewat Nginx reverse proxy ke domain
 `fisimate.rafiadipramana.dev` (HTTPS via Let's Encrypt).
 
 Asumsi: VPS Ubuntu/Debian, akses root/sudo via SSH. Web ini hanya frontend —
@@ -59,7 +60,7 @@ npm run build
 
 ## 3. Jalankan dengan PM2
 
-Repo ini sudah punya `ecosystem.config.cjs` (jalan di PORT **3000** via
+Repo ini sudah punya `ecosystem.config.cjs` (jalan di PORT **3006** via
 `next start`). Dari root project:
 
 ```bash
