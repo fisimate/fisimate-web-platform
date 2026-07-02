@@ -1,13 +1,16 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
 // Chakra v3: `extendTheme` (v2) dihapus, diganti "system" hasil `createSystem`.
-// Global style (font Poppins) yang dulu di `styles.global` dipindah ke `globalCss`.
+//
+// `preflight: false` WAJIB di sini. Chakra v3 secara default menyuntikkan CSS
+// reset global (`* { padding: 0; border-width: 0 }`, dll) lewat Emotion secara
+// UNLAYERED. Tailwind v4 menaruh semua utility-nya di dalam `@layer utilities`,
+// dan menurut aturan cascade CSS, style unlayered MENGALAHKAN style ber-layer —
+// sehingga reset Chakra menimpa seluruh utility Tailwind (padding/border hilang
+// di semua elemen). Karena Chakra di project ini hanya dipakai untuk toast,
+// reset global-nya tidak diperlukan (Tailwind sudah punya preflight sendiri).
 const config = defineConfig({
-  globalCss: {
-    body: {
-      fontFamily: '"Poppins", sans-serif',
-    },
-  },
+  preflight: false,
 });
 
 const system = createSystem(defaultConfig, config);
